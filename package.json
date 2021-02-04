@@ -1,0 +1,18 @@
+{
+  "name": "instawatch-post-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "testing.js",
+  "dependencies": {
+    "mysql2": "^2.2.5",
+    "puppeteer": "^5.5.0",
+    "puppeteer-extra": "^3.1.16",
+    "puppeteer-extra-plugin-stealth": "^2.6.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
