@@ -1,12 +1,15 @@
 const puppeteerClass = require('./puppeteer');
 const mysqlClass = require('./mysql');
 const tools = require('./tools');
+const mysqlQuery = require('./mysqlQuery');
 const https = require('https');
 const fs = require('fs');
 // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html
 // https://www.youtube.com/watch?v=Wnbw15Oue1k&t=203s
 // https://docs.aws.amazon.com/code-samples/latest/catalog/javascriptv3-s3-src-s3_createbucket.ts.html
+
 main("01085656981");
+
 async function main(id) {
     async function checkActionBlocked() {
         const actionBlockedButton = await puppeteer.getElementsByXpath("//button[contains(., 'Report a')]");
@@ -27,27 +30,19 @@ async function main(id) {
         countLoggerCounter++;
     }
 
-    // 가정 1.
-    // instagramId에 할당된 categoryId의 post를 받는다.
-    // instagramId에 할당된 key의 idPostedPosts에 포함되지 않는 post를 찾는다.
-    // asc times posted의 순서로 나열한다.
+    countLogger();
+    const mysql = await mysqlClass.new();
+    countLogger();
+    const instagramId = await mysql.get(mysqlQuery.getInstagramIdQuery(id));
+    countLogger();
+    const notPostedRelatedPost = await mysql.get(mysqlQuery.getNotPostedRelatedPostsQuery(id));
+    countLogger();
+    const file = fs.createWriteStream("post.jpg");
+    https.get(notPostedRelatedPost[0]['postUrl'], function (response) { response.pipe(file); });
+    countLogger();
 
-
-    // 아래 방법으로 해당 url을 받는다.
-    const file = fs.createWriteStream("file.jpg");
-    const request = https.get("https://instawatch-posts.s3.ap-northeast-2.amazonaws.com/programming-or-googling.jpg", function (response) {
-        response.pipe(file);
-    });
-
-    // instagram 
+    // 실제로 다운로드된 포스트를 puppeteer를 통해 포스팅하기
     // https://github.com/Anyesh/instagram-bot-puppeteer
-
-
-    // countLogger();
-    // const mysql = await mysqlClass.new();
-    // countLogger();
-    // const instagramId = await mysql.get('SELECT * FROM instagramId WHERE id =\'' + id + '\'');
-    // countLogger();
     // const puppeteer = puppeteerClass.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: false });
     // countLogger();
     // await puppeteer.launch();
@@ -81,12 +76,3 @@ exports.lambdaHandler = async (event) => {
 // pushing image to ecs
 // docker tag like-follow-image:latest 500023560643.dkr.ecr.ap-northeast-2.amazonaws.com/like-follow-image:latest
 // docker push 500023560643.dkr.ecr.ap-northeast-2.amazonaws.com/like-follow-image:latest
-
-// 
-
-// max 150 actions per day
-// 70 follows per day?
-
-// Use conservative parameters 
-// (max follows/unfollows per day 150 and max 20 per hour, 
-// maybe even start out lower, and work your way up)
