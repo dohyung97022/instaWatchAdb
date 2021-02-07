@@ -41,3 +41,12 @@ module.exports.getIncreseTimesPostedQuery = function (postPk) {
     return query;
 }
 
+//getUpdateCookiesQuery
+module.exports.getUpdateCookiesQuery = function (id, cookies) {
+    const query = `UPDATE instagramId
+    SET cookies = '`+ cookies + `'
+    WHERE id = '`+ id + `';`
+    return query;
+}
+
+

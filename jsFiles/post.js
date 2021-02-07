@@ -6,6 +6,11 @@ const MysqlQuery = require('./mysqlQuery');
 const Https = require('https');
 const Fs = require('fs');
 
+// eatsleepcoder
+// mebamz
+
+main("eatsleepcoder");
+
 
 async function main(id) {
     const mysql = await Mysql.new();
@@ -21,13 +26,26 @@ async function main(id) {
     const file = Fs.createWriteStream("post.jpg");
     Https.get(notPostedRelatedPost[0].postUrl, function (response) { response.pipe(file) });
     Tools.countLogger();
-    const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
+    const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: false });
     Tools.countLogger();
     await puppeteer.launch();
     Tools.countLogger();
-    await puppeteer.emulate("iPhone 6");
+    if (instagramId[0].cookies != "")
+        await puppeteer.setCookieWithString(instagramId[0].cookies);
     Tools.countLogger();
-    await puppeteer.setCookieWithString(instagramId[0].cookies);
+    await puppeteer.goto("https://www.instagram.com/tags/t");
+    Tools.countLogger();
+    await puppeteer.waitSec(3);
+    Tools.countLogger();
+    // 모바일에서의 쿠키 저장은 작용되지 않습니다.
+    const loggedIn = await loginIfNot();
+    Tools.countLogger();
+    if (loggedIn)
+        await saveCookie();
+    Tools.countLogger();
+    await puppeteer.waitSec(5);
+    Tools.countLogger();
+    await puppeteer.emulate("iPhone 6");
     Tools.countLogger();
     await puppeteer.goto("https://instagram.com");
     Tools.countLogger();
@@ -73,6 +91,33 @@ async function main(id) {
     await mysql.exec(MysqlQuery.getIncreseTimesPostedQuery(notPostedRelatedPost[0].pk));
     Tools.countLogger();
     return "post finished";
+
+    async function loginIfNot() {
+        var loginButton = await puppeteer.getElementsByXpath("//button[.='로그인' or contains(., 'Log In') or contains(., 'login')]");
+        if (loginButton.length) {
+            await loginButton[0].click();
+            await puppeteer.waitSec(3);
+            const idInput = await puppeteer.getElementsByXpath("//input[@name='username']");
+            await idInput[0].type(instagramId[0].id);
+            const pwInput = await puppeteer.getElementsByXpath("//input[@name='password']");
+            await pwInput[0].type(instagramId[0].password);
+            var retry = 5;
+            var disabledSubmitButton = await puppeteer.getElementsByXpath("//button[@disabled]");
+            while (retry-- && disabledSubmitButton.length) {
+                puppeteer.waitSec(1);
+                disabledSubmitButton = await puppeteer.getElementsByXpath("//button[@disabled]");
+            }
+            const submitButton = await puppeteer.getElementsByXpath("//button[@type='submit']");
+            await submitButton[0].click();
+            puppeteer.waitSec(3);
+            return true;
+        }
+        return false;
+    }
+    async function saveCookie() {
+        const cookiesObject = await puppeteer.getCookiesObject();
+        mysql.exec(MysqlQuery.getUpdateCookiesQuery(id, JSON.stringify(cookiesObject, null, 2)));
+    }
 }
 
 exports.lambdaHandler = async (event) => {

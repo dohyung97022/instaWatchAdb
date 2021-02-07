@@ -4,13 +4,17 @@ const MysqlQuery = require('./mysqlQuery');
 const Tools = require('./Tools');
 const { codingCategory } = require('./data');
 
+// eatsleepcoder
+// mebamz
+main("eatsleepcoder");
+
 async function main(id) {
     Tools.countLogger();
     const mysql = await Mysql.new();
     Tools.countLogger();
     const instagramId = await mysql.get(MysqlQuery.getInstagramIdQuery(id));
     Tools.countLogger();
-    const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
+    const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: false });
     Tools.countLogger();
     await puppeteer.launch();
     Tools.countLogger();
@@ -18,6 +22,11 @@ async function main(id) {
     Tools.countLogger();
 
     await puppeteer.goto(Tools.getRandomFromArray(codingCategory));
+
+    Tools.countLogger();
+    const loggedIn = await loginIfNot();
+    if (loggedIn)
+        await saveCookie();
     Tools.countLogger();
 
     const hotPostArry = await getPostArrayOfLen(6);
@@ -93,6 +102,7 @@ async function main(id) {
         return users;
     }
 
+    // TODO: actionBlock이 될 경우 mysql에 bocked = true로 변동하기
     async function checkActionBlocked() {
         const actionBlockedButton = await puppeteer.getElementsByXpath("//button[contains(., 'Report a')]");
         if (actionBlockedButton.length) {
@@ -153,6 +163,34 @@ async function main(id) {
                     console.log(e);
                 }
         }
+    }
+
+    async function loginIfNot() {
+        var loginButton = await puppeteer.getElementsByXpath("//button[.='로그인' or contains(., 'Log In') or contains(., 'login')]");
+        if (loginButton.length) {
+            await loginButton[0].click();
+            await puppeteer.waitSec(3);
+            const idInput = await puppeteer.getElementsByXpath("//input[@name='username']");
+            await idInput[0].type(instagramId[0].id);
+            const pwInput = await puppeteer.getElementsByXpath("//input[@name='password']");
+            await pwInput[0].type(instagramId[0].password);
+            var retry = 5;
+            var disabledSubmitButton = await puppeteer.getElementsByXpath("//button[@disabled]");
+            while (retry-- && disabledSubmitButton.length) {
+                puppeteer.waitSec(1);
+                disabledSubmitButton = await puppeteer.getElementsByXpath("//button[@disabled]");
+            }
+            const submitButton = await puppeteer.getElementsByXpath("//button[@type='submit']");
+            await submitButton[0].click();
+            await puppeteer.waitSec(5);
+            return true;
+        }
+        return false;
+    }
+
+    async function saveCookie() {
+        const cookiesObject = await puppeteer.getCookiesObject();
+        mysql.exec(MysqlQuery.getUpdateCookiesQuery(id, JSON.stringify(cookiesObject, null, 2)));
     }
 }
 
