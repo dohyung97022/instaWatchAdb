@@ -1,6 +1,5 @@
 const fs = require('fs').promises;
 
-
 //get
 
 //getStringFromFile
@@ -32,4 +31,10 @@ module.exports.getRandomFromArray = function (array) {
 module.exports.getRandomRemovedFromArray = function (array) {
     const idx = Math.floor(Math.random() * array.length);
     return array.splice(idx, 1)[0];
+}
+
+var countLoggerCounter = 0;
+module.exports.countLogger = function () {
+    console.log(countLoggerCounter);
+    countLoggerCounter++;
 }

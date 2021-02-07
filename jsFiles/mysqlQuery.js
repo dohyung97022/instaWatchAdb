@@ -6,7 +6,7 @@ module.exports.getInstagramIdQuery = function (id) {
     return query;
 }
 
-//getJsonFromFile
+//getNotPostedRelatedPostsQuery
 module.exports.getNotPostedRelatedPostsQuery = function (id) {
     const query = `
     SELECT postUrl, postText, pk
@@ -26,3 +26,18 @@ module.exports.getNotPostedRelatedPostsQuery = function (id) {
     WHERE idPostedPosts.postPk IS NULL;`
     return query;
 }
+
+//getInsertIdPostedPostQuery
+module.exports.getInsertIdPostedPostQuery = function (instagramIdPk, postPk) {
+    const query = `
+    INSERT INTO idPostedPosts(instagramIdPk, postPk)
+    VALUES(`+ instagramIdPk + `,` + postPk + `);`
+    return query;
+}
+
+//getIncreseTimesPostedQuery
+module.exports.getIncreseTimesPostedQuery = function (postPk) {
+    const query = `UPDATE posts SET timesPosted = timesPosted + 1 WHERE pk = ` + postPk + `;`
+    return query;
+}
+
