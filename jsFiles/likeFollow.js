@@ -117,7 +117,7 @@ async function main(id) {
             var followButtons = await puppeteer.getElementsByXpath("//button[.='Follow']");
             var allButtons = await puppeteer.getElementsByXpath("//button[.='Follow' or contains(., 'Following') or contains(., 'Requested')]");
             if (followButtons.length)
-                for (let i = 0; i < followButtons.length; i++) {
+                for (let i = 0; i < followButtons.length && maxFollowLimit; i++) {
                     await followButtons[i].focus();
                     await followButtons[i].click();
                     maxFollowLimit--;
