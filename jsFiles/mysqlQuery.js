@@ -49,4 +49,53 @@ module.exports.getUpdateCookiesQuery = function (id, cookies) {
     return query;
 }
 
+//getUpdateActionBlockedQuery
+module.exports.getUpdateActionBlockedQuery = function (id, blocked) {
+    const query = `UPDATE instagramId
+    SET blocked=`+ blocked + `
+    WHERE id = '`+ id + `';`
+    return query;
+}
+
+
+//getInsertIpQuery
+module.exports.getInsertIpQuery = function (ip) {
+    const query = `
+    INSERT INTO ips
+        (ip)
+    VALUES
+        ('`+ ip + `');`
+    return query;
+}
+
+//getIpQuery
+module.exports.getIpQuery = function (ip) {
+    const query = `
+    SELECT * 
+    FROM ips
+    WHERE
+        ip = '`+ ip + `';`
+    return query;
+}
+
+//getInsertIpVisitedIdsQuery
+module.exports.getInsertIpVisitedIdsQuery = function (idPk, ipPk) {
+    const query = `
+    INSERT INTO idVisitedIps
+        (instagramIdPk, ipPk)
+    VALUES
+        ('`+ idPk + `', '` + ipPk + `');`
+    return query;
+}
+
+//getInsertLogQuery
+module.exports.getInsertLogQuery = function (file, ipPk, error, time) {
+    const query = `
+    INSERT INTO logs
+        (file, instagramIdPk, name, message, stack, time)
+    VALUES
+        ('`+ file + `', '` + ipPk + `', '` + error.name + `', '` + error.message + `', '` + error.stack + `', '` + time + `');`
+    return query;
+}
+
 

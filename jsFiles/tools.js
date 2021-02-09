@@ -1,4 +1,5 @@
 const fs = require('fs').promises;
+const path = require('path');
 
 //get
 
@@ -31,6 +32,16 @@ module.exports.getRandomFromArray = function (array) {
 module.exports.getRandomRemovedFromArray = function (array) {
     const idx = Math.floor(Math.random() * array.length);
     return array.splice(idx, 1)[0];
+}
+
+//getCurrentFileName
+module.exports.getCurrentFileName = function () {
+    return path.basename(__filename);
+}
+
+//getCurrentDateTime
+module.exports.getCurrentDateTime = function () {
+    return new Date().toISOString().replace('T', ' ').substring(0, 19);
 }
 
 var countLoggerCounter = 0;
