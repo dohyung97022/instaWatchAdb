@@ -6,7 +6,6 @@ chromium.use(StealthPlugin());
 
 module.exports.new = function (settings) {
     const puppeteer = {};
-    puppeteer.chromium = chromium;
     puppeteer.headless = settings.headless;
     puppeteer.args = settings.args;
     puppeteer.browser = null;
@@ -49,6 +48,11 @@ module.exports.new = function (settings) {
     //puppeteer.waitForSelector
     puppeteer.waitForSelector = async function (selector) {
         await this.page.waitForSelector(selector);
+    }
+
+    //puppeteer.waitForXpath
+    puppeteer.waitForXpath = async function (Xpath) {
+        await this.page.waitForXpath(Xpath);
     }
 
     //set
@@ -107,6 +111,12 @@ module.exports.new = function (settings) {
     //puppeteer.clickSelector
     puppeteer.clickSelector = async function (selector) {
         await this.page.click(selector);
+    }
+
+    //select
+    //puppeteer.selectFromDropdown
+    puppeteer.selectFromDropdown = async function (dropdownSelector, value) {
+        await this.page.select(dropdownSelector, value);
     }
 
     return puppeteer;

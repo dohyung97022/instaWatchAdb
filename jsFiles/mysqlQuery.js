@@ -98,4 +98,20 @@ module.exports.getInsertLogQuery = function (file, ipPk, error, time) {
     return query;
 }
 
+//getCategoryUserNamesQuery
+module.exports.getCategoryUserNamesQuery = function (category) {
+    const query = `
+    SELECT userName
+    FROM category as c 
+    INNER JOIN categoryUserNames as n 
+    ON c.pk = n.categoryPk
+    WHERE c.category = '`+ category + `';`
+    return query;
+}
 
+
+// SELECT userName
+// FROM category as c 
+// INNER JOIN categoryUserNames as n 
+// ON c.pk = n.categoryPk
+// WHERE c.category = 'coding';

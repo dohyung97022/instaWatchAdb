@@ -44,6 +44,37 @@ module.exports.getCurrentDateTime = function () {
     return new Date().toISOString().replace('T', ' ').substring(0, 19);
 }
 
+//getRandomLettersOfLen
+module.exports.getRandomLettersOfLen = function (length) {
+    var result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
+    for (var i = 0; i < length; i++)
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    return result;
+}
+
+//getRandomLettersOfLenFromPool
+module.exports.getRandomLettersOfLenFromPool = function (length, letterPool) {
+    var result = '';
+    for (var i = 0; i < length; i++)
+        result += letterPool.charAt(Math.floor(Math.random() * letterPool.length));
+    return result;
+}
+
+//getRandomHangul
+module.exports.getRandomHangul = function () {
+    return String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
+}
+
+//getRandomHangul
+module.exports.getRandomHangulName = function () {
+    let name = '';
+    for (let i = 0; i < 3; i++) {
+        name += String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
+    }
+    return name;
+}
+
 var countLoggerCounter = 0;
 module.exports.countLogger = function () {
     console.log(countLoggerCounter);
