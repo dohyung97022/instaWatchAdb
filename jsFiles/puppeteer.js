@@ -15,6 +15,10 @@ module.exports.new = function (settings) {
     puppeteer.launch = async function () {
         this.browser = await chromium.launch({ args: this.args, headless: this.headless });
         this.page = await this.browser.newPage();
+
+        await this.page.evaluateOnNewDocument(() => {
+            window.navigator = {}
+        })
     };
 
     //puppeteer.close
