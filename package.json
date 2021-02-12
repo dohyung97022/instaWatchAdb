@@ -4,7 +4,10 @@
   "description": "",
   "main": "testing.js",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.4.1",
+    "@aws-sdk/s3-request-presigner": "^3.4.1",
     "mysql2": "^2.2.5",
+    "prompt-sync": "^4.2.0",
     "puppeteer": "^5.5.0",
     "puppeteer-extra": "^3.1.16",
     "puppeteer-extra-plugin-stealth": "^2.6.6"

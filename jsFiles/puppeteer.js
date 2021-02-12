@@ -28,7 +28,6 @@ module.exports.new = function (settings) {
 
     //puppeteer.goto
     puppeteer.goto = async function (url) {
-        console.log(url);
         await this.page.goto(url);
     }
 

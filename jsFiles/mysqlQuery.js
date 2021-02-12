@@ -109,9 +109,29 @@ module.exports.getCategoryUserNamesQuery = function (category) {
     return query;
 }
 
+//getInsertKakaoAccountQuery
+module.exports.getInsertKakaoAccountQuery = function (id, password, registerEmail) {
+    const query = `
+    INSERT INTO 
+    kakaoId(id,password,registeredEmail)
+    VALUE ('`+ id + `','` + password + `','` + registerEmail + `');`
+    return query;
+}
 
-// SELECT userName
-// FROM category as c 
-// INNER JOIN categoryUserNames as n 
-// ON c.pk = n.categoryPk
-// WHERE c.category = 'coding';
+//getInsertInstaAccountQuery
+module.exports.getInsertInstaAccountQuery = function (id, name, password, registerEmail) {
+    const query = `
+    INSERT INTO 
+    instagramId(id,name,password,registeredEmail)
+    VALUE ('`+ id + `','` + name + `','` + password + `','` + registerEmail + `');`
+    return query;
+}
+
+//getInsertFacebookAccountQuery
+module.exports.getInsertFacebookAccountQuery = function (id, name, password, registerEmail) {
+    const query = `
+    INSERT INTO 
+    facebookId(id,name,password,registeredEmail)
+    VALUE ('`+ id + `','` + name + `','` + password + `','` + registerEmail + `');`
+    return query;
+}

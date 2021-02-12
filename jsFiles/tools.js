@@ -9,6 +9,13 @@ module.exports.getStringFromFile = async function (location) {
     return cookiesString;
 }
 
+//getStringBetween
+module.exports.getStringBetween = function (original, from, to) {
+    return original.match(new RegExp(from + "([\\s\\S]*)" + to))[1];
+    // return original.substring(original.lastIndexOf(from) + 1, original.lastIndexOf(to));
+}
+
+
 //getJsonFromFile
 module.exports.getJsonFromFile = async function (location) {
     const cookiesString = await fs.readFile(location);
@@ -47,7 +54,7 @@ module.exports.getCurrentDateTime = function () {
 //getRandomLettersOfLen
 module.exports.getRandomLettersOfLen = function (length) {
     var result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_';
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < length; i++)
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     return result;
@@ -74,6 +81,11 @@ module.exports.getRandomHangulName = function () {
     }
     return name;
 }
+
+module.exports.waitSec = async function (seconds) {
+    await new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
+
 
 var countLoggerCounter = 0;
 module.exports.countLogger = function () {
