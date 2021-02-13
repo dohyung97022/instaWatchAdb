@@ -2,10 +2,7 @@ const Puppeteer = require('./puppeteer');
 const Mysql = require('./mysql');
 const MysqlQuery = require('./mysqlQuery');
 const Tools = require('./Tools');
-const { codingCategory } = require('./data');
-
-// eatsleepcoder
-// mebamz
+const Ip = require('./ip');
 
 async function main(id) {
     const mysql = await Mysql.new();
@@ -14,15 +11,17 @@ async function main(id) {
         await saveIp();
         const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
         await puppeteer.launch();
-        await puppeteer.setCookieWithString(instagramId[0].cookies);
-        await puppeteer.goto(Tools.getRandomFromArray(codingCategory));
+        if (instagramId[0].cookies != '')
+            await puppeteer.setCookieWithString(instagramId[0].cookies);
+        const categoryRelatedTags = await mysql.get(MysqlQuery.getCategoryRelatedTags(instagramId[0].categoryPk));
+        await puppeteer.goto('https://www.instagram.com/explore/tags/' + Tools.getRandomFromArray(categoryRelatedTags)['tag']);
         const loggedIn = await loginIfNot();
         if (loggedIn)
             await saveCookie();
         const hotPostArry = await getPostArrayOfLen(6);
         const othersWhoLikedButton = await getOthersWhoLikedButtonFromPostArray(hotPostArry);
         await puppeteer.waitSec(3);
-        othersWhoLikedButton[0].click();
+        await othersWhoLikedButton[0].click();
         await puppeteer.waitSec(5);
         await followLikePopupByLimit(instagramId[0].followPerAction);
         const userArry = await getUserArrayFromHTMLStr();
@@ -37,15 +36,16 @@ async function main(id) {
                 await loginButton[0].click();
                 await puppeteer.waitSec(3);
                 const idInput = await puppeteer.getElementsByXpath("//input[@name='username']");
-                await idInput[0].type(instagramId[0].id);
+                await idInput[0].type(instagramId[0].id, { delay: 200 });
                 const pwInput = await puppeteer.getElementsByXpath("//input[@name='password']");
-                await pwInput[0].type(instagramId[0].password);
+                await pwInput[0].type(instagramId[0].password, { delay: 200 });
                 var retry = 5;
                 var disabledSubmitButton = await puppeteer.getElementsByXpath("//button[@disabled]");
                 while (retry-- && disabledSubmitButton.length) {
                     puppeteer.waitSec(1);
                     disabledSubmitButton = await puppeteer.getElementsByXpath("//button[@disabled]");
                 }
+                await puppeteer.waitSec(3);
                 const submitButton = await puppeteer.getElementsByXpath("//button[@type='submit']");
                 await submitButton[0].click();
                 await puppeteer.waitSec(5);
@@ -77,17 +77,6 @@ async function main(id) {
             const cookiesObject = await puppeteer.getCookiesObject();
             mysql.exec(MysqlQuery.getUpdateCookiesQuery(id, JSON.stringify(cookiesObject, null, 2)));
         }
-        async function getPostArrayOfLen(len) {
-            const htmlStr = await puppeteer.getHTMLStr();
-            const htmlMatch = htmlStr.match(/a\shref="\/p\/[^\/]+\//g);
-            var postArray;
-            if (htmlMatch)
-                postArray = htmlMatch.splice(0, len);
-            if (postArray != null)
-                for (let i = 0; i < postArray.length; i++)
-                    postArray[i] = postArray[i].split('"').pop();
-            return postArray;
-        }
         async function getOthersWhoLikedButtonFromPostArray(postArray) {
             var othersWhoLikedButton = [];
             while (postArray.length && !othersWhoLikedButton.length) {
@@ -98,9 +87,9 @@ async function main(id) {
                     await puppeteer.waitSec(3);
                     await checkActionBlocked();
                 }
-                othersWhoLikedButton = await puppeteer.getAtLeastOneElementFromXpathArray(["//button[contains(., 'others')]", "//button[contains(., 'likes')]"]);
+                othersWhoLikedButton = await puppeteer.getElementsByXpath(["//a[contains(., 'others') or contains(., 'likes')]"]);
                 if (!othersWhoLikedButton.length)
-                    othersWhoLikedButton = await puppeteer.getAtLeastOneElementFromXpathArray(["//a[contains(., 'others')]", "//a[contains(., 'likes')]"]);
+                    othersWhoLikedButton = await puppeteer.getElementsByXpath(["//button[contains(., 'others') or contains(., 'likes')]"]);
             }
             if (postArray.length == 0 && !othersWhoLikedButton.length) {
                 console.log("Is not able to find get all likes buttons in all posts!!!");
@@ -152,31 +141,43 @@ async function main(id) {
                     await allButtons[allButtons.length - 1].focus();
             }
         }
+        async function getPostArrayOfLen(len) {
+            const htmlStr = await puppeteer.getHTMLStr();
+            const htmlMatch = htmlStr.match(/a\shref="\/p\/[^\/]+\//g);
+            var postArray;
+            if (htmlMatch)
+                postArray = htmlMatch.splice(0, len);
+            if (postArray != null)
+                for (let i = 0; i < postArray.length; i++)
+                    postArray[i] = postArray[i].split('"').pop();
+            return postArray;
+        }
         async function likePostsOfUserArrayByLimit(users, likePerUser, maxLikeLimit) {
             likePosts:
             for (const user of users) {
-                console.log("user = " + user);
                 if (maxLikeLimit)
                     try {
                         await puppeteer.goto('https://www.instagram.com' + user);
                         await puppeteer.waitSec(3);
-                        var userPostArry = await getPostArrayOfLen(likePerUser);
-                        console.log("userPostArry = " + userPostArry);
+                        var userPostArry = await puppeteer.getElementsByXpath("//a[contains(@href,'/p/')]//div//div//img");
+                        if (userPostArry.length > likePerUser)
+                            userPostArry = userPostArry.slice(0, likePerUser);
                         if (userPostArry != null)
                             for (const userPost of userPostArry) {
-                                await puppeteer.goto('https://www.instagram.com' + userPost);
+                                await userPost.click();
                                 await puppeteer.waitSec(3);
                                 var [likeButton] = await puppeteer.getElementsByXpath('//*[name()="svg" and @aria-label="Like" and @height="24"]');
                                 if (likeButton) {
-                                    await puppeteer.waitSec(3);
                                     if (maxLikeLimit) {
                                         likeButton.click();
                                         maxLikeLimit--;
                                     } else
                                         break likePosts;
-                                    await puppeteer.waitSec(3);
+                                    await puppeteer.waitSec(2);
                                     await checkActionBlocked();
                                 }
+                                await puppeteer.page.mouse.click(100, 100);
+                                await puppeteer.waitSec(2);
                             }
                     } catch (e) {
                         console.log(e);
@@ -189,9 +190,49 @@ async function main(id) {
         console.log(error);
         return error;
     }
+
+
 }
 
 exports.lambdaHandler = async (event) => {
     const response = await main(event.id);
     return response;
 };
+
+
+
+// 문제
+// 자동화를 통해 계정을 돌리면 바로 차단당했다.
+
+// 요소
+// chromium, click 요소, id의 질
+
+// 실험 1.
+// puppeteer를 사용해서 많은 팔로우와 좋아요를 해본다.
+// 평가 중점 : puppeteer와 chrome의 차이 평가
+// 팔로우 : 30
+// 좋아요 : 20
+// 아이디 pk : 6
+// 성공
+// 된다....
+// 포스트는 클릭적인 요소가 중요한 것 같다.
+
+
+// 실험 2.
+// post를 url로 들어가지 않고 클릭해서 들어가고 클릭하서 나온다.
+// 평가 중점 : post url로 바로 들어가는 것이 문제인지 파악
+// 팔로우 : 25
+// 좋아요 : 20
+// 아이디 pk : 7
+// 성공
+// 클릭이 문제였다.
+// selenium은 아직 detected되지 않았다.
+
+// 실험 3.
+// 실험 2의 재실험
+// 평가 중점 : 실험 2의 중점이 맞는지 재확인 하기
+// 팔로우 : 25
+// 좋아요 : 20
+// 아이디 pk : 8
+// 성공
+// 클릭이 문제였다는 점은 확정, 수정 완료

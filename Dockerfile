@@ -7,4 +7,4 @@ FROM amazon/aws-lambda-nodejs:12
 RUN curl https://intoli.com/install-google-chrome.sh | bash
 COPY jsFiles/*.js package*.json ./
 RUN npm install
-CMD ["unFollow.lambdaHandler"]
+CMD ["likeFollow.lambdaHandler"]

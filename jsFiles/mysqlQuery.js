@@ -135,3 +135,18 @@ module.exports.getInsertFacebookAccountQuery = function (id, name, password, reg
     VALUE ('`+ id + `','` + name + `','` + password + `','` + registerEmail + `');`
     return query;
 }
+
+//getCategoryRelatedTags
+module.exports.getCategoryRelatedTags = function (categoryPk) {
+    const query = `
+    SELECT tag
+    FROM tags
+    INNER JOIN
+    (SELECT tagPk
+    FROM category
+    INNER JOIN categoryRelatedTags
+    ON category.pk = categoryRelatedTags.categoryPk
+    WHERE category.pk = '`+ categoryPk + `') AS b
+    ON tags.pk = b.tagPk;`
+    return query;
+}

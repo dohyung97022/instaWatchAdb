@@ -4,10 +4,6 @@ const Mysql = require('./mysql');
 const Tools = require('./tools');
 const MysqlQuery = require('./mysqlQuery');
 
-
-// eatsleepcoder
-// mebamz
-
 async function main(id) {
     const mysql = await Mysql.new();
     const instagramId = await mysql.get(MysqlQuery.getInstagramIdQuery(id));
@@ -15,7 +11,7 @@ async function main(id) {
         await saveIp();
         const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
         await puppeteer.launch();
-        if (instagramId[0].cookies != "")
+        if (instagramId[0].cookies != '')
             await puppeteer.setCookieWithString(instagramId[0].cookies);
         await puppeteer.goto("https://www.instagram.com");
         const loggedIn = await loginIfNot();

@@ -69,18 +69,18 @@ module.exports.getRandomLettersOfLenFromPool = function (length, letterPool) {
 }
 
 //getRandomHangul
-module.exports.getRandomHangul = function () {
-    return String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
-}
+// module.exports.getRandomHangul = function () {
+//     return String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
+// }
 
 //getRandomHangul
-module.exports.getRandomHangulName = function () {
-    let name = '';
-    for (let i = 0; i < 3; i++) {
-        name += String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
-    }
-    return name;
-}
+// module.exports.getRandomHangulName = function () {
+//     let name = '';
+//     for (let i = 0; i < 3; i++) {
+//         name += String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
+//     }
+//     return name;
+// }
 
 module.exports.waitSec = async function (seconds) {
     await new Promise(resolve => setTimeout(resolve, seconds * 1000));

@@ -7,9 +7,6 @@ const MysqlQuery = require('./mysqlQuery');
 const Https = require('https');
 const Fs = require('fs');
 
-// eatsleepcoder
-// mebamz
-
 async function main(id) {
     const mysql = await Mysql.new();
     const instagramId = await mysql.get(MysqlQuery.getInstagramIdQuery(id));
@@ -24,7 +21,7 @@ async function main(id) {
         Https.get(notPostedRelatedPost[0].postUrl, function (response) { response.pipe(file) });
         const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
         await puppeteer.launch();
-        if (instagramId[0].cookies != "")
+        if (instagramId[0].cookies != '')
             await puppeteer.setCookieWithString(instagramId[0].cookies);
         await puppeteer.goto("https://www.instagram.com/tags/t");
         await puppeteer.waitSec(3);
