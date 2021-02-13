@@ -1,33 +1,52 @@
 const Puppeteer = require('./puppeteer');
 const Mysql = require('./mysql');
 const MysqlQuery = require('./mysqlQuery');
-const Tools = require('./Tools');
+const Tools = require('./tools');
 const Ip = require('./ip');
 
 async function main(id) {
     const mysql = await Mysql.new();
     const instagramId = await mysql.get(MysqlQuery.getInstagramIdQuery(id));
     try {
+        Tools.countLogger();
         await saveIp();
+        Tools.countLogger();
         const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
+        Tools.countLogger();
         await puppeteer.launch();
+        Tools.countLogger();
         if (instagramId[0].cookies != '')
             await puppeteer.setCookieWithString(instagramId[0].cookies);
+        Tools.countLogger();
         const categoryRelatedTags = await mysql.get(MysqlQuery.getCategoryRelatedTags(instagramId[0].categoryPk));
+        Tools.countLogger();
         await puppeteer.goto('https://www.instagram.com/explore/tags/' + Tools.getRandomFromArray(categoryRelatedTags)['tag']);
+        Tools.countLogger();
         const loggedIn = await loginIfNot();
+        Tools.countLogger();
         if (loggedIn)
             await saveCookie();
+        Tools.countLogger();
         const hotPostArry = await getPostArrayOfLen(6);
+        Tools.countLogger();
         const othersWhoLikedButton = await getOthersWhoLikedButtonFromPostArray(hotPostArry);
+        Tools.countLogger();
         await puppeteer.waitSec(3);
+        Tools.countLogger();
         await othersWhoLikedButton[0].click();
+        Tools.countLogger();
         await puppeteer.waitSec(5);
+        Tools.countLogger();
         await followLikePopupByLimit(instagramId[0].followPerAction);
+        Tools.countLogger();
         const userArry = await getUserArrayFromHTMLStr();
+        Tools.countLogger();
         await puppeteer.waitSec(3);
+        Tools.countLogger();
         await likePostsOfUserArrayByLimit(userArry, 3, instagramId[0].likePerAction);
+        Tools.countLogger();
         await puppeteer.close();
+        Tools.countLogger();
         return Tools.getCurrentFileName() + " finished"
 
         async function loginIfNot() {
@@ -75,6 +94,7 @@ async function main(id) {
         }
         async function saveCookie() {
             const cookiesObject = await puppeteer.getCookiesObject();
+            console.log(JSON.stringify(cookiesObject, null, 2));
             mysql.exec(MysqlQuery.getUpdateCookiesQuery(id, JSON.stringify(cookiesObject, null, 2)));
         }
         async function getOthersWhoLikedButtonFromPostArray(postArray) {
@@ -190,8 +210,6 @@ async function main(id) {
         console.log(error);
         return error;
     }
-
-
 }
 
 exports.lambdaHandler = async (event) => {
@@ -236,3 +254,5 @@ exports.lambdaHandler = async (event) => {
 // 아이디 pk : 8
 // 성공
 // 클릭이 문제였다는 점은 확정, 수정 완료
+
+// pk 9 docker 실험

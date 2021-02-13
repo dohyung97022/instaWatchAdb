@@ -8,20 +8,33 @@ async function main(id) {
     const mysql = await Mysql.new();
     const instagramId = await mysql.get(MysqlQuery.getInstagramIdQuery(id));
     try {
+        Tools.countLogger();
         await saveIp();
+        Tools.countLogger();
         const puppeteer = Puppeteer.new({ args: ['--single-process', '--no-zygote', '--no-sandbox'], headless: true });
+        Tools.countLogger();
         await puppeteer.launch();
+        Tools.countLogger();
         if (instagramId[0].cookies != '')
             await puppeteer.setCookieWithString(instagramId[0].cookies);
+        Tools.countLogger();
         await puppeteer.goto("https://www.instagram.com");
+        Tools.countLogger();
         const loggedIn = await loginIfNot();
+        Tools.countLogger();
         if (loggedIn)
             await saveCookie();
+        Tools.countLogger();
         await puppeteer.goto("https://www.instagram.com/" + id + "/");
+        Tools.countLogger();
         const followingButton = await puppeteer.getElementsByXpath("//li[contains(., 'following')]");
+        Tools.countLogger();
         await followingButton[0].click();
+        Tools.countLogger();
         await unFollowByLimit(instagramId[0].unfollowPerAction);
+        Tools.countLogger();
         await puppeteer.close();
+        Tools.countLogger();
         return Tools.getCurrentFileName() + " finished"
 
         async function loginIfNot() {
