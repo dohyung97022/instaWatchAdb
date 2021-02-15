@@ -41,6 +41,11 @@ module.exports.getRandomRemovedFromArray = function (array) {
     return array.splice(idx, 1)[0];
 }
 
+//getRandomNumberInRange
+module.exports.getRandomNumberInRange = function (min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 //getCurrentFileName
 module.exports.getCurrentFileName = function () {
     return path.basename(__filename);

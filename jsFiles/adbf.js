@@ -2,11 +2,19 @@ const CMD = require("./cmd");
 const fs = require('fs');
 const cv = require('opencv4nodejs');
 const Tools = require('./tools');
+const { mainModule } = require("process");
 
 // com.instagram.android
 
 //adb.tapImage
 module.exports.tapImage = async function (imageLocation, addX, addY, matchConfidence) {
+    if (!addX)
+        addX = 0;
+    if (!addY)
+        addY = 0;
+    if (!matchConfidence)
+        matchConfidence = 0.95;
+
     const screenImg = '../img/screen.png';
     // DeleteOriginal
     try {
@@ -46,7 +54,7 @@ module.exports.tapImage = async function (imageLocation, addX, addY, matchConfid
     const { maxLoc: { x, y } } = minMax;
     const cx = x + findImage.cols / 2 + addX;
     const cy = y + findImage.rows / 2 + addY;
-
+    console.log("tapImg " + cx + " " + cy);
     // Click x, y
     await CMD.exec('adb shell input tap ' + cx + ' ' + cy);
 }
@@ -54,22 +62,34 @@ module.exports.tapImage = async function (imageLocation, addX, addY, matchConfid
 module.exports.tapLocation = async function (x, y) {
     await CMD.exec('adb shell input tap ' + x + ' ' + y);
 }
+//adb.swipe
+module.exports.swipe = async function (x, y, x2, y2, millis) {
+    await CMD.exec('adb shell input swipe ' + x + ' ' + y + ' ' + x2 + ' ' + y2 + ' ' + millis + ' ');
+}
 //adb.type
-module.exports.type = async function (message) {
+module.exports.type = async function (message, intervalMillis) {
+    if (!intervalMillis)
+        intervalMillis = 1000;
+
     // adb keyboard 확인 및 변경
     const currentKeyboard = await CMD.exec('adb shell settings get secure default_input_method');
     if (currentKeyboard != 'com.android.adbkeyboard/.AdbIME\r\n') {
         await CMD.exec('adb shell ime set com.android.adbkeyboard/.AdbIME');
-        await Tools.waitMilli(1000);
+        await Tools.waitMilli(intervalMillis);
     }
     for (const char of message) {
         const utf8Char = Buffer.from(char, 'utf-8').toString('base64');
         await CMD.exec('adb shell am broadcast -a ADB_INPUT_B64 --es msg ' + utf8Char);
     }
 }
+//adb.typeKeyCode
+//http://www.dreamy.pe.kr/zbxe/CodeClip/164608
+module.exports.typeKeyCode = async function (keyCode) {
+    await CMD.exec('adb shell input keyevent ' + keyCode);
+}
 //adb.captureImage
 module.exports.captureImage = async function () {
-    const screenImg = 'screen.png';
+    const screenImg = '../img/screen.png';
     // DeleteOriginal
     try {
         fs.unlinkSync(screenImg);
@@ -79,13 +99,15 @@ module.exports.captureImage = async function () {
     // // Wait for imageDelete
     await Tools.waitFileDelete(screenImg, 300, 50);
 
-    await CMD.exec('adb shell screencap -p /sdcard/' + screenImg);
+    await CMD.exec('adb shell screencap -p /sdcard/screen.png');
     await Tools.waitMilli(700);
-    await CMD.exec('adb pull /sdcard/' + screenImg + ' ' + screenImg);
+    await CMD.exec('adb pull /sdcard/screen.png ' + screenImg);
 }
 //adb.openApp
 module.exports.openApp = async function (appName) {
-    await CMD.exec('adb shell monkey -p ' + appName + ' 1');
+    try {
+        await CMD.exec('adb shell monkey -p ' + appName + ' 1');
+    } catch (e) { }
 }
 //adb.killApp
 module.exports.killApp = async function (appName) {
