@@ -68,24 +68,33 @@ module.exports.getRandomLettersOfLenFromPool = function (length, letterPool) {
     return result;
 }
 
-//getRandomHangul
-// module.exports.getRandomHangul = function () {
-//     return String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
-// }
-
-//getRandomHangul
-// module.exports.getRandomHangulName = function () {
-//     let name = '';
-//     for (let i = 0; i < 3; i++) {
-//         name += String.fromCharCode(44031 + Math.ceil(11172 * Math.random()));
-//     }
-//     return name;
-// }
-
 module.exports.waitSec = async function (seconds) {
     await new Promise(resolve => setTimeout(resolve, seconds * 1000));
 }
 
+module.exports.waitMilli = async function (milliSeconds) {
+    await new Promise(resolve => setTimeout(resolve, milliSeconds));
+}
+
+module.exports.waitFileDelete = async function (fileName, waitMilli, retry) {
+    while (retry--)
+        try {
+            await fs.promises.access(fileName);
+            await new Promise(resolve => setTimeout(resolve, waitMilli));
+        } catch (e) {
+            retry = 0;
+        }
+}
+
+module.exports.waitFileExist = async function (fileName, waitMilli, retry) {
+    while (retry--)
+        try {
+            await fs.promises.access(fileName);
+            retry = 0;
+        } catch (e) {
+            await new Promise(resolve => setTimeout(resolve, waitMilli));
+        }
+}
 
 var countLoggerCounter = 0;
 module.exports.countLogger = function () {

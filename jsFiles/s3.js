@@ -46,12 +46,4 @@ module.exports.new = async function (options) {
     }
 
     return s3;
-
-    //new Date().toISOString();
-    //2012-11-04T14:51:06.157Z
-
-    //2021-02-10T15:26:11.000Z
-
-    //2021-02-11T11:39:43.534Z
-    //2021-02-11T10:59:53.000Z
 }

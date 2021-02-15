@@ -26,6 +26,10 @@ async function main(id) {
         Tools.countLogger();
         if (loggedIn)
             await saveCookie();
+        else {
+            console.log("is not logged in.");
+            return "is not logged in.";
+        }
         Tools.countLogger();
         const hotPostArry = await getPostArrayOfLen(6);
         Tools.countLogger();
@@ -94,7 +98,6 @@ async function main(id) {
         }
         async function saveCookie() {
             const cookiesObject = await puppeteer.getCookiesObject();
-            console.log(JSON.stringify(cookiesObject, null, 2));
             mysql.exec(MysqlQuery.getUpdateCookiesQuery(id, JSON.stringify(cookiesObject, null, 2)));
         }
         async function getOthersWhoLikedButtonFromPostArray(postArray) {
@@ -206,8 +209,8 @@ async function main(id) {
         }
 
     } catch (error) {
-        await mysql.exec(MysqlQuery.getInsertLogQuery(Tools.getCurrentFileName(), instagramId[0].pk, error, Tools.getCurrentDateTime()));
         console.log(error);
+        await mysql.exec(MysqlQuery.getInsertLogQuery(Tools.getCurrentFileName(), instagramId[0].pk, error, Tools.getCurrentDateTime()));
         return error;
     }
 }
@@ -217,7 +220,10 @@ exports.lambdaHandler = async (event) => {
     return response;
 };
 
-
+// # testing build
+// # docker build -t like-follow-image:latest .
+// # docker run -p 9000:8080 like-follow-image:latest
+// # curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d {\"id\":\"cr1j7hep9\"}
 
 // 문제
 // 자동화를 통해 계정을 돌리면 바로 차단당했다.

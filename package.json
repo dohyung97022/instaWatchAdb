@@ -8,6 +8,7 @@
     "@aws-sdk/s3-request-presigner": "^3.4.1",
     "korean-name-generator": "^1.0.4",
     "mysql2": "^2.2.5",
+    "opencv4nodejs": "^5.6.0",
     "prompt-sync": "^4.2.0",
     "puppeteer": "^5.5.0",
     "puppeteer-extra": "^3.1.16",
