@@ -67,17 +67,32 @@ module.exports.swipe = async function (x, y, x2, y2, millis) {
     await CMD.exec('adb shell input swipe ' + x + ' ' + y + ' ' + x2 + ' ' + y2 + ' ' + millis + ' ');
 }
 //adb.type
-module.exports.type = async function (message, intervalMillis) {
-    if (!intervalMillis)
-        intervalMillis = 1000;
+module.exports.type = async function (message, minIntervalMillis, maxIntervalMillis, doReWrite) {
+    if (!minIntervalMillis)
+        minIntervalMillis = 0;
+    if (!maxIntervalMillis)
+        maxIntervalMillis = 1000;
+    if (!doReWrite)
+        doReWrite = false;
 
     // adb keyboard 확인 및 변경
     const currentKeyboard = await CMD.exec('adb shell settings get secure default_input_method');
     if (currentKeyboard != 'com.android.adbkeyboard/.AdbIME\r\n') {
         await CMD.exec('adb shell ime set com.android.adbkeyboard/.AdbIME');
-        await Tools.waitMilli(intervalMillis);
+        await Tools.waitSec(1);
     }
     for (const char of message) {
+        if (doReWrite) {
+            if (Math.random() < 0.1) {
+                await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
+                const randomChar = Tools.getRandomLettersOfLenFromPool(1, 'abcdefghijklmnopqrstuvwxyz');
+                const utf8DeleteChar = Buffer.from(randomChar, 'utf-8').toString('base64');
+                await CMD.exec('adb shell am broadcast -a ADB_INPUT_B64 --es msg ' + utf8DeleteChar);
+                await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
+                await CMD.exec('adb shell input keyevent KEYCODE_DEL');
+            }
+        }
+        await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
         const utf8Char = Buffer.from(char, 'utf-8').toString('base64');
         await CMD.exec('adb shell am broadcast -a ADB_INPUT_B64 --es msg ' + utf8Char);
     }

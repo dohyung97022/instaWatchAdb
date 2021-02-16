@@ -1,49 +1,49 @@
 Return-Path: <noreply@kakao.com>
-Received: from mail-smail-vm103.hanmail.net (mail-smail-vm103.daum.net [211.231.106.178])
- by inbound-smtp.us-east-1.amazonaws.com with SMTP id q91rpm6dp36bgtct4toi618j2bprh4gs367hq8o1
- for o5xx6fon2@adiy.info;
- Mon, 15 Feb 2021 10:38:24 +0000 (UTC)
+Received: from mail-smail-vm105.hanmail.net (mail-smail-vm105.daum.net [211.231.106.180])
+ by inbound-smtp.us-east-1.amazonaws.com with SMTP id 1jhlbviaktivvtq3arlutf98q4o7mk8a6q21ca01
+ for 769o2en38@adiy.info;
+ Mon, 15 Feb 2021 12:00:25 +0000 (UTC)
 X-SES-Spam-Verdict: PASS
 X-SES-Virus-Verdict: PASS
-Received-SPF: pass (spfCheck: domain of kakao.com designates 211.231.106.178 as permitted sender) client-ip=211.231.106.178; envelope-from=noreply@kakao.com; helo=mail-smail-vm103.daum.net;
+Received-SPF: pass (spfCheck: domain of kakao.com designates 211.231.106.180 as permitted sender) client-ip=211.231.106.180; envelope-from=noreply@kakao.com; helo=mail-smail-vm105.daum.net;
 Authentication-Results: amazonses.com;
- spf=pass (spfCheck: domain of kakao.com designates 211.231.106.178 as permitted sender) client-ip=211.231.106.178; envelope-from=noreply@kakao.com; helo=mail-smail-vm103.daum.net;
+ spf=pass (spfCheck: domain of kakao.com designates 211.231.106.180 as permitted sender) client-ip=211.231.106.180; envelope-from=noreply@kakao.com; helo=mail-smail-vm105.daum.net;
  dmarc=pass header.from=kakao.com;
-X-SES-RECEIPT: AEFBQUFBQUFBQUFGYW1PQ1dWbkJiQlpkRzZnRGVzT252N3VwVGc4d1piNnlEdUdyZk93YitmUDE5bEF0TjZwc0RnZTZYYXlFcy9DUVQxOGhsN1M4VGVTNFY3OUxSdUxiOFMyTTYxQy93ekJqU2N1UlA1UENDcjhpVnZmTTJCanh4S05jdWFzTnZac1R4Y3hzeDljWURrUFAwMllPVGZ5QzRsUTRsR0NMT3QxZm5qem5nTDlUVkl0dnI2VVdPNVlqdUF4OXNWWWgxZVFqSmc2WFhFSDE5TnJPNGViRmxUQlgwVFRhaDUrWGNLUzduZVFzSmlnQWdZdXRHRlk3cGFTRWtrRElxdVhhSmMwTGhucUhQVVkvQkpnZ1dyUk1Hc2NkR1dUajcwMFplVFJsbVVOM2diaTNURFE9PQ==
-X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=k4YNe4nmY9wEndFiBa7J7/9wZUp+kd6OoGE6JfFx3wMhTYOCethf0gUHHOrY+mkZVOS7YJZVEwuH6K6ZMIaF9xmWp/8laXe1RntxhZ35/ePRfRIWIkYbSbfJ/v0axpD+vcwF0bvs+nFpBWPmhgz584vQPd19mnF+rzyeELpzdPg=; c=relaxed/simple; s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1613385506; v=1; bh=t2sp/9Ihr/gyVg9AI26XnEJZl5635YtewXdQEQIGOow=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
-Received: from mail-kmh-relay2 ([10.194.6.7])
-        by mail-smail-vm103.hanmail.net (8.13.8/8.9.1) with SMTP id 11FAcAgN001856
-        for <o5xx6fon2@adiy.info>; Mon, 15 Feb 2021 19:38:10 +0900
-X-Hermes-Message-Id: p1FJcAX09792677581
-Date: Mon, 15 Feb 2021 19:38:10 +0900
+X-SES-RECEIPT: AEFBQUFBQUFBQUFHVmxHUzIxbFRUTG1OdlBmN3BxU0EzZFhML0hpTlpla09PYzkzYXplcm00NXhHUnhmTlpIRmJydkZtZGpOWVR4SFpWSjV1S1dCL1hxWjJ1SkpvcVBIMkFPbjZXWm94eFZJSGV4T2dHRVpzTUp1cXdEaWhHaUFsb1Y0ajFyUEphRTlQNXViVExvVEpQSHhtMVphbTc5Vjl1UlI3WlUwOUpsWFJTVEsxU0tsd3VVaUZ0NFJhd2NoTjNodUtUSmo2S1FKbXMxSXNlejJJbzVjQ2wxVW1yNk9OblRURk16VUwxSERJR0VDamhqaDJKRmc0K0xhTFlUUlBXMUlESlJGUWlhdGhibFJsbXVXcnNBTk1wb0EyK0o5Q0J1dHFMOGZjaHFXK2NtbmFPczZ6MlE9PQ==
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=DqEOCznv169UtPFEv3Uhc3EnnzVrl91qLVklI8/ZIry9TjXoZoA9F3tQU+EX0paGFuLqsl/EqmVDStDtubh2O04DepZiYTVc44/0RUF2mgkaLy170FcOUoCQfL8KYUJLDD/9e4zU03C7MsDWnKUTlKnXXeVhbwTa1uLfJqTjOBg=; c=relaxed/simple; s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1613390429; v=1; bh=PQ/uH1lMiEE+ERmAETth31tzpUh/Sd8GxQzk2Y34oTk=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: from mail-kmh-relay3 ([10.194.6.8])
+        by mail-smail-vm105.hanmail.net (8.13.8/8.9.1) with SMTP id 11FC0C7l022325
+        for <769o2en38@adiy.info>; Mon, 15 Feb 2021 21:00:12 +0900
+X-Hermes-Message-Id: p1FL0C7jS751107770
+Date: Mon, 15 Feb 2021 21:00:12 +0900
 From: =?UTF-8?B?7Lm07Lm07Jik7YyA?= <noreply@kakao.com>
-To: o5xx6fon2@adiy.info
-Message-ID: <602a4f1282e19_18211a3df30936a1@account-weblogin-pg007.mail>
+To: 769o2en38@adiy.info
+Message-ID: <602a624c1cae9_4a5b1ea40382921a@account-weblogin-pg005.mail>
 Subject: =?UTF-8?Q?[Kakao]_=EC=B9=B4=EC=B9=B4=EC=98=A4=EA=B3=84=EC=A0=95?=
  =?UTF-8?Q?_=EA=B0=80=EC=9E=85_=EC=9D=B8=EC=A6=9D=EB=B2=88=ED=98=B8?=
 Mime-Version: 1.0
 Content-Type: multipart/related;
- boundary="--==_mimepart_602a4f1282888_18211a3df30935a0";
+ boundary="--==_mimepart_602a624c1c342_4a5b1ea40382912c";
  charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received: from kakao.com ([10.61.38.87]) by hermes of mail-kmh-relay2 (10.194.6.7) with ESMTP id p1FJcAX09792677581 for <o5xx6fon2@adiy.info>; Mon, 15 Feb 2021 19:38:10 +0900 (KST)
+Received: from kakao.com ([10.61.38.53]) by hermes of mail-kmh-relay3 (10.194.6.8) with ESMTP id p1FL0C7jS751107770 for <769o2en38@adiy.info>; Mon, 15 Feb 2021 21:00:12 +0900 (KST)
 
 
-----==_mimepart_602a4f1282888_18211a3df30935a0
+----==_mimepart_602a624c1c342_4a5b1ea40382912c
 Content-Type: multipart/alternative;
- boundary="--==_mimepart_602a4f12827d4_18211a3df309345b";
+ boundary="--==_mimepart_602a624c1c276_4a5b1ea40382908b";
  charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
-----==_mimepart_602a4f12827d4_18211a3df309345b
+----==_mimepart_602a624c1c276_4a5b1ea40382908b
 Content-Type: text/plain;
  charset=UTF-8
 Content-Transfer-Encoding: base64
 
 7Lm07Lm07Jik6rOE7KCVDQotLS0tDQoNCuy5tOy5tOyYpOqzhOyglSDqsIDs
 noXsnYQg7JyE7ZWcIOyduOymneuyiO2YuOyeheuLiOuLpC4NCg0KLSDsnbjs
-pp3rsojtmLggOiA3NzI0Mjg2NA0KDQoNCi0tLS0NCuuzuCDrqZTsnbzsnYAg
+pp3rsojtmLggOiA4OTI2OTUyMg0KDQoNCi0tLS0NCuuzuCDrqZTsnbzsnYAg
 67Cc7Iug7KCE7Jqp7J6F64uI64ukLlxu7Lm07Lm07Jik6rOE7KCVIOq0gOug
 qO2VmOyXrCDqtoHquIjtlZwg7KCQ7J20IOyeiOycvOyLnOuptCDrj4Tsm4Dr
 p5DsnYQg7ZmV7J247ZW0IOuztOyEuOyalC4NCi0g66eB7YGsIDogaHR0cHM6
@@ -51,7 +51,7 @@ Ly9jcy5rYWthby5jb20vaGVscHM/bG9jYWxlPWtvJnNlcnZpY2U9NTINCg0K
 Q29weXJpZ2h0IChjKSBLYWthbyBDb3JwLiBBbGwgcmlnaHRzIHJlc2VydmVk
 Lg0KDQo=
 
-----==_mimepart_602a4f12827d4_18211a3df309345b
+----==_mimepart_602a624c1c276_4a5b1ea40382908b
 Content-Type: text/html;
  charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
@@ -81,8 +81,8 @@ ign=3D"center" bgcolor=3D"#efeff0" style=3D"border-collapse:collapse">=0D=
         <tr>=0D
           <td width=3D"6%" height=3D"25" bgcolor=3D"#ffdc00"></td>=0D
           <td width=3D"88%" height=3D"25" bgcolor=3D"#ffdc00">=0D
-            <img src=3Dcid:602a4f12820c7_18211a3df30933ba@account-weblogi=
-n-pg007.mail width=3D"204" height=3D"25" alt=3D"kakao =EA=B3=84=EC=A0=95"=
+            <img src=3Dcid:602a624c1b6f5_4a5b1ea4038289a0@account-weblogi=
+n-pg005.mail width=3D"204" height=3D"25" alt=3D"kakao =EA=B3=84=EC=A0=95"=
  border=3D"0" style=3D"display:block"/>=0D
           </td>=0D
           <td width=3D"6%" height=3D"25" bgcolor=3D"#ffdc00"></td>=0D
@@ -143,7 +143,7 @@ e:14px;font-weight:normal">=EC=B9=B4=EC=B9=B4=EC=98=A4=EA=B3=84=EC=A0=95<=
 /th>=0D
         <td width=3D"2%"></td>=0D
         <td width=3D"70%" valign=3D"top" style=3D"font-size:14px;font-wei=
-ght:bold;word-break:break-all">o5xx6fon2@adiy.info</td>=0D
+ght:bold;word-break:break-all">769o2en38@adiy.info</td>=0D
         <td width=3D"3%"></td>=0D
       </tr>=0D
       <tr>=0D
@@ -155,7 +155,7 @@ ght:bold;word-break:break-all">o5xx6fon2@adiy.info</td>=0D
 e:14px;font-weight:normal">=EC=9D=B8=EC=A6=9D=EB=B2=88=ED=98=B8</th>=0D
         <td width=3D"2%"></td>=0D
         <td width=3D"70%" valign=3D"top" style=3D"font-size:14px;font-wei=
-ght:bold;word-break:break-all">77242864</td>=0D
+ght:bold;word-break:break-all">89269522</td>=0D
         <td width=3D"3%"></td>=0D
       </tr>=0D
       <tr>=0D
@@ -222,15 +222,15 @@ t=3D"_blank" style=3D"color:#767676;text-decoration:none">Kakao Corp.</a>=
   </tbody>=0D
 </table>=
 
-----==_mimepart_602a4f12827d4_18211a3df309345b--
+----==_mimepart_602a624c1c276_4a5b1ea40382908b--
 
-----==_mimepart_602a4f1282888_18211a3df30935a0
+----==_mimepart_602a624c1c342_4a5b1ea40382912c
 Content-Type: image/png;
  filename=title_account.png
 Content-Transfer-Encoding: base64
 Content-Disposition: inline;
  filename=title_account.png
-Content-ID: <602a4f12820c7_18211a3df30933ba@account-weblogin-pg007.mail>
+Content-ID: <602a624c1b6f5_4a5b1ea4038289a0@account-weblogin-pg005.mail>
 
 iVBORw0KGgoAAAANSUhEUgAAAZgAAAAyCAYAAABhy81pAAAAAXNSR0IArs4c
 6QAAAAlwSFlzAAALEwAACxMBAJqcGAAABl5pVFh0WE1MOmNvbS5hZG9iZS54
@@ -420,4 +420,4 @@ KtBVX9BG1nfR52CeSU+uHRCQ6NS4agS/FNo8rv/i+jx5ahnVuhgQ0EdIq6qq
 +oNzJ3wbnsdW6n0Vz/2jHfnbazFAZUXmEYH/ApDk6f9R4f9+AAAAAElFTkSu
 QmCC
 
-----==_mimepart_602a4f1282888_18211a3df30935a0--
+----==_mimepart_602a624c1c342_4a5b1ea40382912c--
