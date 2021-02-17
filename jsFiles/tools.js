@@ -92,12 +92,24 @@ module.exports.waitFileDelete = async function (fileName, waitMilli, retry) {
 }
 
 module.exports.waitFileExist = async function (fileName, waitMilli, retry) {
+    // while (retry--)
+    //     try {
+    //         await fs.promises.access(fileName);
+    //         retry = 0;
+    //     } catch (e) {
+    //         await new Promise(resolve => setTimeout(resolve, waitMilli));
+    //     }
     while (retry--)
         try {
-            await fs.promises.access(fileName);
-            retry = 0;
-        } catch (e) {
-            await new Promise(resolve => setTimeout(resolve, waitMilli));
+            if (fs.existsSync(fileName)) {
+                // console.log("File exists.")
+                retry = 0;
+            } else {
+                // console.log("File does not exist.")
+                await new Promise(resolve => setTimeout(resolve, waitMilli));
+            }
+        } catch (err) {
+            // console.error(err)
         }
 }
 

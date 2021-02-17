@@ -26,9 +26,7 @@ module.exports.tapImage = async function (imageLocation, addX, addY, matchConfid
     await Tools.waitFileDelete(screenImg, 300, 50);
 
     // Get Mobile Screen
-    await CMD.exec('adb shell screencap -p /sdcard/screen.png');
-    await Tools.waitMilli(700);
-    await CMD.exec('adb pull /sdcard/screen.png ' + screenImg);
+    await CMD.exec('adb exec-out screencap -p > ' + screenImg);
 
     // Wait for imageDownload
     await Tools.waitFileExist(screenImg, 300, 50);
@@ -47,7 +45,7 @@ module.exports.tapImage = async function (imageLocation, addX, addY, matchConfid
     console.log(minMax.maxVal);
     if (minMax.maxVal < matchConfidence) {
         console.log(imageLocation + ' not found');
-        return;
+        return false;
     }
 
     // Get click x, y
@@ -57,6 +55,48 @@ module.exports.tapImage = async function (imageLocation, addX, addY, matchConfid
     console.log("tapImg " + cx + " " + cy);
     // Click x, y
     await CMD.exec('adb shell input tap ' + cx + ' ' + cy);
+
+    return true;
+}
+// adb.findImage
+module.exports.findImage = async function (imageLocation, matchConfidence) {
+    if (!matchConfidence)
+        matchConfidence = 0.95;
+
+    const screenImg = '../img/screen.png';
+    // DeleteOriginal
+    try {
+        fs.unlinkSync(screenImg);
+    } catch (e) {
+    }
+
+    // // Wait for imageDelete
+    await Tools.waitFileDelete(screenImg, 300, 50);
+
+    // Get Mobile Screen
+    await CMD.exec('adb exec-out screencap -p > ' + screenImg);
+
+    // Wait for imageDownload
+    await Tools.waitFileExist(screenImg, 300, 50);
+
+    // Load images in cv
+    const originalImage = await cv.imreadAsync(screenImg);
+    const findImage = await cv.imreadAsync(imageLocation);
+
+    // Get Matched
+    const matched = originalImage.matchTemplate(findImage, 5);
+
+    // Use minMaxLoc to locate the highest value (or lower, depending of the type of matching method)
+    const minMax = matched.minMaxLoc();
+
+    // Check confidence
+    console.log(minMax.maxVal);
+    if (minMax.maxVal < matchConfidence) {
+        console.log(imageLocation + ' not found');
+        return false;
+    }
+
+    return true;
 }
 //adb.tapLocation
 module.exports.tapLocation = async function (x, y) {
@@ -113,10 +153,7 @@ module.exports.captureImage = async function () {
 
     // // Wait for imageDelete
     await Tools.waitFileDelete(screenImg, 300, 50);
-
-    await CMD.exec('adb shell screencap -p /sdcard/screen.png');
-    await Tools.waitMilli(700);
-    await CMD.exec('adb pull /sdcard/screen.png ' + screenImg);
+    await CMD.exec('adb exec-out screencap -p > ' + screenImg);
 }
 //adb.openApp
 module.exports.openApp = async function (appName) {
