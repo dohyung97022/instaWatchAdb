@@ -6,6 +6,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.4.1",
     "@aws-sdk/s3-request-presigner": "^3.4.1",
+    "faker": "^5.4.0",
     "korean-name-generator": "^1.0.4",
     "mysql2": "^2.2.5",
     "opencv4nodejs": "^5.6.0",

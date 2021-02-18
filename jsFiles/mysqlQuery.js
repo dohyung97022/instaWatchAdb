@@ -150,3 +150,12 @@ module.exports.getCategoryRelatedTags = function (categoryPk) {
     ON tags.pk = b.tagPk;`
     return query;
 }
+
+//getInsertGoogleId
+module.exports.getInsertGoogleId = function (id, password, firstName, lastName) {
+    const query = `
+    INSERT INTO 
+    googleId(id,password,firstName,lastName)
+    VALUE ('`+ id + `','` + password + `','` + firstName + `','` + lastName + `');`
+    return query;
+}

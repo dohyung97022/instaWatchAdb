@@ -123,7 +123,7 @@ module.exports.type = async function (message, minIntervalMillis, maxIntervalMil
     }
     for (const char of message) {
         if (doReWrite) {
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.05) {
                 await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
                 const randomChar = Tools.getRandomLettersOfLenFromPool(1, 'abcdefghijklmnopqrstuvwxyz');
                 const utf8DeleteChar = Buffer.from(randomChar, 'utf-8').toString('base64');
@@ -136,6 +136,18 @@ module.exports.type = async function (message, minIntervalMillis, maxIntervalMil
         const utf8Char = Buffer.from(char, 'utf-8').toString('base64');
         await CMD.exec('adb shell am broadcast -a ADB_INPUT_B64 --es msg ' + utf8Char);
     }
+}
+//adb.typeBasic
+module.exports.typeBasic = async function (input) {
+    await CMD.exec('adb shell input text ' + input);
+}
+//adb.delete
+module.exports.delete = async function () {
+    await CMD.exec('adb shell input keyevent KEYCODE_DEL');
+}
+//adb.enter
+module.exports.enter = async function () {
+    await CMD.exec('adb shell input keyevent KEYCODE_ENTER');
 }
 //adb.typeKeyCode
 //http://www.dreamy.pe.kr/zbxe/CodeClip/164608
