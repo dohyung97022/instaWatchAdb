@@ -159,3 +159,15 @@ module.exports.getInsertGoogleId = function (id, password, firstName, lastName) 
     VALUE ('`+ id + `','` + password + `','` + firstName + `','` + lastName + `');`
     return query;
 }
+
+//getGoogleIds
+module.exports.getGoogleIds = function () {
+    return `
+    SELECT id,password FROM instaWatch.googleId ORDER BY pk DESC;`
+}
+
+//getRemoveGoogleId
+module.exports.getRemoveGoogleId = function (id) {
+    return `
+    DELETE FROM instaWatch.googleId WHERE id = '`+ id + `';`
+}
