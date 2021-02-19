@@ -299,6 +299,8 @@ async function edgeDropdown() {
 
 async function main() {
     await ADB.setBrightness(106);
+    const deviceId = '192.168.43.1:5555'
+    ADB
     // @기호를 포함해야 합니다.
     // 브라우저마다 범위 선택의 위치가 다르다.
     // range를 변수로 추가하기
