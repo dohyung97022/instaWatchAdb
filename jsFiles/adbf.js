@@ -4,6 +4,8 @@ const cv = require('opencv4nodejs');
 const Tools = require('./tools');
 const { mainModule } = require("process");
 
+//106
+
 // com.instagram.android
 
 //adb.tapImage
@@ -177,6 +179,12 @@ module.exports.openApp = async function (appName) {
 module.exports.killApp = async function (appName) {
     await CMD.exec('adb shell am force-stop ' + appName);
 }
+//adb.getCurrentApp
+module.exports.getCurrentApp = async function () {
+    const activityRecord = await CMD.exec('adb shell "dumpsys activity activities | grep mResumedActivity"');
+    const currentApp = activityRecord.match(new RegExp(" ([^\\s]+\\.[^\\s]+)\\/"));
+    return currentApp[currentApp.length - 1];
+}
 //adb.clearAppData
 module.exports.clearAppData = async function (appName) {
     await CMD.exec('adb shell pm clear ' + appName);
@@ -189,7 +197,7 @@ module.exports.lteOff = async function () {
 module.exports.lteOn = async function () {
     await CMD.exec('adb shell svc data enable');
 }
-//adb.getCurrentApp
-module.exports.getCurrentApp = async function () {
-    return await CMD.exec('adb shell "dumpsys activity activities | grep mResumedActivity"');
+//adb.setBrightness
+module.exports.setBrightness = async function (brightness) {
+    await CMD.exec('adb shell settings put system screen_brightness ' + brightness);
 }
