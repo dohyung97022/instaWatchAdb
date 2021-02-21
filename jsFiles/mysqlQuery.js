@@ -152,11 +152,11 @@ module.exports.getCategoryRelatedTags = function (categoryPk) {
 }
 
 //getInsertGoogleId
-module.exports.getInsertGoogleId = function (id, password, firstName, lastName) {
+module.exports.getInsertGoogleId = function (id, password, firstName, lastName, device, createTime) {
     const query = `
     INSERT INTO 
-    googleId(id,password,firstName,lastName)
-    VALUE ('`+ id + `','` + password + `','` + firstName + `','` + lastName + `');`
+    googleId(id,password,firstName,lastName,device,createTime)
+    VALUE ('`+ id + `','` + password + `','` + firstName + `','` + lastName + `','` + device + `','` + createTime + `');`
     return query;
 }
 

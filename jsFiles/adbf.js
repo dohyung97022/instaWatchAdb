@@ -247,6 +247,14 @@ module.exports.new = function (deviceId) {
         //com.sec.android.inputmethod/.SamsungKeypad
         await CMD.exec('adb -s ' + deviceId + ' shell ime set ' + keyboard);
     }
+    //adb.resize
+    adb.resize = async function (x, y) {
+        await CMD.exec('adb -s ' + deviceId + ' shell wm size ' + x + 'x' + y);
+    }
+    //adb.resetSize
+    adb.resetSize = async function () {
+        await CMD.exec('adb -s ' + deviceId + ' shell wm size reset');
+    }
 
     //set
 

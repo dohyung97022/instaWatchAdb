@@ -17,7 +17,7 @@ async function createGoogleAccount(adb, device) {
         // 가끔씩 안나올 때도 있다?
         await adb.tapUntilImgFound(device.googleImages.myAccount);
         await Tools.waitMilli(1231);
-
+        Faker.locale('ko');
         const firstName = Faker.name.firstName().replace(/[^a-z0-9A-Z]/g, "");
         const lastName = Faker.name.lastName().replace(/[^a-z0-9A-Z]/g, "");
         const email = (Tools.getRandomFromArray([firstName, lastName]).toLowerCase() + Tools.getRandomLettersOfLenFromPool(6, '1234567890')).replace(/[^a-z0-9]/g, "");
@@ -91,7 +91,7 @@ async function createGoogleAccount(adb, device) {
         // }
         const mysql = await Mysql.new();
         // if (isDone)
-        await mysql.exec(MysqlQuery.getInsertGoogleId(email, password, firstName, lastName));
+        await mysql.exec(MysqlQuery.getInsertGoogleId(email, password, firstName, lastName, device.name, Tools.getCurrentDateTime()));
         const currentApp = await adb.getCurrentApp();
         await adb.clearAppData(currentApp);
         return;
@@ -103,6 +103,7 @@ async function createGoogleAccount(adb, device) {
 }
 
 const s10 = {
+    name: 's10',
     samsungSetup: async function (adb) {
         await adb.clearAppData('com.sec.android.app.sbrowser');
         await Tools.waitSec(5);
@@ -171,6 +172,7 @@ const s10 = {
 }
 
 const note5 = {
+    name: 'note5',
     samsungSetup: async function (adb) {
         await adb.clearAppData('com.sec.android.app.sbrowser');
         await Tools.waitSec(5);
@@ -241,7 +243,7 @@ async function main() {
     const oldAdb = ADB.new(oldDeviceId);
 
     await newAdb.setBrightness(106);
-    await oldAdb.setBrightness(106);
+    // await oldAdb.setBrightness(106);
 
     // // // 특정 device에 너무 많은 트래픽이 빨리 모이면 block당한다.
     // // // 한시간에 5개를 나눠서 traffic을 줘보도록 하자.
@@ -251,20 +253,31 @@ async function main() {
     for (let i = 0; i < 200; i++) {
         await newAdb.lteOff();
         await newAdb.lteOn();
-        await newAdb.lock();
+        // await newAdb.lock();
 
         await oldAdb.lock();
         await createGoogleAccount(oldAdb, note5);
         await oldAdb.setBasicKeyboard('com.sec.android.inputmethod/.SamsungKeypad');
         await oldAdb.lock();
 
-        await newAdb.unlock('9347314da');
-        await newAdb.lteOff();
-        await newAdb.lteOn();
-        await createGoogleAccount(newAdb, s10);
-        await newAdb.setBasicKeyboard('com.samsung.android.honeyboard/.service.HoneyBoardService');
-        await newAdb.lock();
+        // await newAdb.unlock('9347314da');
+        // await newAdb.lteOff();
+        // await newAdb.lteOn();
+        // await createGoogleAccount(newAdb, s10);
+        // await newAdb.setBasicKeyboard('com.samsung.android.honeyboard/.service.HoneyBoardService');
+        // await newAdb.lock();
+        await Tools.waitSec(Tools.getRandomNumberInRange(3600, 4600));
     }
+}
+
+async function test() {
+    const newDeviceId = 'R39M60041TD'
+    const oldDeviceId = '0915f948d3db1c05'
+    const newAdb = ADB.new(newDeviceId);
+    const oldAdb = ADB.new(oldDeviceId);
+
+    await newAdb.captureImage();
+    await newAdb.resetSize();
 }
 
 
@@ -278,4 +291,6 @@ async function waitRandom() {
 // 쿠키를 저장하여 쿠키로 로그인 하게 되게 한다?
 
 
-main();
+test();
+
+//com.sec.android.app.sbrowser/.settings.SettingsActivity
