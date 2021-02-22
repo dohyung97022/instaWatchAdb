@@ -67,7 +67,7 @@ module.exports.new = function (deviceId) {
     //adb.tapUntilImgFound
     adb.tapUntilImgFound = async function (img, retry) {
         if (!retry)
-            retry = 50;
+            retry = 30;
         await Tools.waitMilli(Tools.getRandomNumberInRange(300, 800));
         var imageFound = false;
         if (Array.isArray(img)) {
@@ -234,8 +234,10 @@ module.exports.new = function (deviceId) {
         await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 26');
         await CMD.exec('adb -s ' + deviceId + ' shell input touchscreen swipe 550 1200 550 400');
         await Tools.waitMilli(500);
-        await CMD.exec('adb -s ' + deviceId + ' shell input text ' + password);
-        await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 66');
+        if (password) {
+            await CMD.exec('adb -s ' + deviceId + ' shell input text ' + password);
+            await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 66');
+        }
     }
     //adb.lock
     adb.lock = async function () {
