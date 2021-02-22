@@ -247,6 +247,7 @@ module.exports.new = function (deviceId) {
     adb.setBasicKeyboard = async function (keyboard) {
         //com.samsung.android.honeyboard/.service.HoneyBoardService
         //com.sec.android.inputmethod/.SamsungKeypad
+        //com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
         await CMD.exec('adb -s ' + deviceId + ' shell ime set ' + keyboard);
     }
     //adb.resize
