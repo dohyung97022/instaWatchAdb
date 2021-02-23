@@ -13,7 +13,6 @@ async function createGoogleAccount(adb, device) {
         await Tools.waitMilli(2600);
         await adb.tapUntilImgFound(device.googleImages.createAccount);
         await Tools.waitSec(1);
-        // 가끔씩 안나올 때도 있다?
         await adb.tapUntilImgFound(device.googleImages.myAccount);
         await Tools.waitMilli(1231);
         // Faker.setLocale('ko');
@@ -28,9 +27,11 @@ async function createGoogleAccount(adb, device) {
         await adb.tapUntilImgFound(device.googleImages.lastName);
         await adb.type(lastName, device.typeMinInterval, device.typeMaxInterval, true);
         await Tools.waitMilli(4000);
-
+        let newGmail = await adb.findImage(device.googleImages.newGmail);
+        if (newGmail)
+            await adb.tapUntilImgFound(device.googleImages.newGmail);
         let idIsEmpty = await adb.findImage(device.googleImages.userName);
-        if (!idIsEmpty) idIsEmpty = await adb.findImage(device.googleImages.userName2);
+        // if (!idIsEmpty) idIsEmpty = await adb.findImage(device.googleImages.userName2);
         if (!idIsEmpty) {
             await Tools.waitMilli(600);
             await adb.tapImage(device.googleImages.eraseName);
@@ -40,7 +41,8 @@ async function createGoogleAccount(adb, device) {
             }
         }
         else {
-            await adb.tapUntilImgFound([device.googleImages.userName, device.googleImages.userName2]);
+            // await adb.tapUntilImgFound([device.googleImages.userName, device.googleImages.userName2]);
+            await adb.tapUntilImgFound(device.googleImages.userName);
         }
         await adb.type(email, device.typeMinInterval, device.typeMaxInterval, true);
 
@@ -81,17 +83,17 @@ async function createGoogleAccount(adb, device) {
         await Tools.waitSec(5);
 
         // 구글 메인화면으로 왔다면 생성 완료
-        // 나중에도 포함시키기
-        // let retry = 50;
-        // var isDone = false;
-        // for (let i = 0; i < retry; i++) {
-        //     if (!isDone)
-        //         isDone = await adb.findImage('../img/google/logo.png');
-        //     else break;
-        // }
-        const mysql = await Mysql.new();
-        // if (isDone)
-        await mysql.exec(MysqlQuery.getInsertGoogleId(email, password, firstName, lastName, device.name, Tools.getCurrentDateTime()));
+        let retry = 50;
+        var isDone = false;
+        for (let i = 0; i < retry; i++) {
+            if (!isDone)
+                isDone = await adb.findImage(device.googleImages.search);
+            else break;
+        }
+        if (isDone) {
+            const mysql = await Mysql.new();
+            await mysql.exec(MysqlQuery.getInsertGoogleId(email, password, firstName, lastName, device.name, Tools.getCurrentDateTime()));
+        }
         const currentApp = await adb.getCurrentApp();
         await adb.clearAppData(currentApp);
         return;
@@ -100,7 +102,6 @@ async function createGoogleAccount(adb, device) {
         await adb.captureImage();
         console.log('error device = ' + device.name);
         console.log(e);
-        process.exit(1);
         return;
     }
 }
@@ -172,7 +173,7 @@ const s10 = {
         agreeServices: '../img/google/s10/agreeServices.png',
         agreeInformation: '../img/google/s10/agreeInformation.png',
         createAccount2: '../img/google/s10/createAccount2.png',
-        logo: '../img/google/s10/logo.png'
+        search: '../img/google/s10/search.png'
     }
 }
 const note5 = {
@@ -186,8 +187,9 @@ const note5 = {
         await adb.type('');
 
         await adb.tapUntilImgFound('../img/samsung/note5/agree.png');
-        await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/note5/later.png');
+        try {
+            await adb.tapUntilImgFound('../img/samsung/note5/later.png');
+        } catch (e) { }
         await adb.tapUntilImgFound('../img/samsung/note5/settings.png');
         await adb.tapUntilImgFound('../img/samsung/note5/options.png');
         await adb.swipe(550, 1800, 550, 0, 1000);
@@ -225,7 +227,8 @@ const note5 = {
         firstName: '../img/google/note5/firstName.png',
         lastName: '../img/google/note5/lastName.png',
         userName: '../img/google/note5/userName.png',
-        userName2: '../img/google/note5/userName2.png',
+        // userName2: '../img/google/note5/userName2.png',
+        newGmail: '../img/google/note5/newGmail.png',
         eraseName: '../img/google/note5/eraseName.png',
         password: '../img/google/note5/password.png',
         confirmPassword: '../img/google/note5/confirmPassword.png',
@@ -236,7 +239,7 @@ const note5 = {
         agreeServices: '../img/google/note5/agreeServices.png',
         agreeInformation: '../img/google/note5/agreeInformation.png',
         createAccount2: '../img/google/note5/createAccount2.png',
-        logo: '../img/google/note5/logo.png'
+        search: '../img/google/note5/search.png'
     }
 }
 const a5 = {
@@ -280,9 +283,9 @@ const a5 = {
     randomScrollDown: async function (adb) {
         await adb.swipe(
             Tools.getRandomNumberInRange(100, 650),
-            Tools.getRandomNumberInRange(1100, 1250),
+            Tools.getRandomNumberInRange(950, 1100),
             Tools.getRandomNumberInRange(100, 650),
-            Tools.getRandomNumberInRange(150, 250), 500);
+            Tools.getRandomNumberInRange(200, 400), 500);
     },
     googleImages: {
         login: '../img/google/a5/login.png',
@@ -291,7 +294,8 @@ const a5 = {
         firstName: '../img/google/a5/firstName.png',
         lastName: '../img/google/a5/lastName.png',
         userName: '../img/google/a5/userName.png',
-        userName2: '../img/google/a5/userName2.png',
+        // userName2: '../img/google/a5/userName2.png',
+        newGmail: '../img/google/a5/newGmail.png',
         eraseName: '../img/google/a5/eraseName.png',
         password: '../img/google/a5/password.png',
         confirmPassword: '../img/google/a5/confirmPassword.png',
@@ -302,7 +306,7 @@ const a5 = {
         agreeServices: '../img/google/a5/agreeServices.png',
         agreeInformation: '../img/google/a5/agreeInformation.png',
         createAccount2: '../img/google/a5/createAccount2.png',
-        logo: '../img/google/a5/logo.png'
+        search: '../img/google/a5/search.png'
     }
 }
 const s6 = {
@@ -357,7 +361,8 @@ const s6 = {
         firstName: '../img/google/s6/firstName.png',
         lastName: '../img/google/s6/lastName.png',
         userName: '../img/google/s6/userName.png',
-        userName2: '../img/google/s6/userName2.png',
+        // userName2: '../img/google/s6/userName2.png',
+        newGmail: '../img/google/s6/newGmail.png',
         eraseName: '../img/google/s6/eraseName.png',
         password: '../img/google/s6/password.png',
         confirmPassword: '../img/google/s6/confirmPassword.png',
@@ -368,7 +373,7 @@ const s6 = {
         agreeServices: '../img/google/s6/agreeServices.png',
         agreeInformation: '../img/google/s6/agreeInformation.png',
         createAccount2: '../img/google/s6/createAccount2.png',
-        logo: '../img/google/s6/logo.png'
+        search: '../img/google/s6/search.png'
     }
 }
 const pocoM3 = {
@@ -381,8 +386,8 @@ const pocoM3 = {
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/agree.png');
-        await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/later.png');
+        // await Tools.waitMilli(500);
+        // await adb.tapUntilImgFound('../img/samsung/pocoM3/later.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/settings.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/options.png');
         await adb.swipe(540, 2100, 540, 0, 1000);
@@ -394,7 +399,10 @@ const pocoM3 = {
         await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/google.png');
+        await adb.tapUntilImgFound('../img/samsung/pocoM3/betweenUrl.png');
+        await adb.typeBasic('www.google.com');
+        await adb.enter();
+
     },
     dropdown: async function (adb) {
         await adb.tapUntilImgFound('../img/google/pocoM3/month.png');
@@ -421,7 +429,8 @@ const pocoM3 = {
         firstName: '../img/google/pocoM3/firstName.png',
         lastName: '../img/google/pocoM3/lastName.png',
         userName: '../img/google/pocoM3/userName.png',
-        userName2: '../img/google/pocoM3/userName2.png',
+        // userName2: '../img/google/pocoM3/userName2.png',
+        newGmail: '../img/google/pocoM3/newGmail.png',
         eraseName: '../img/google/pocoM3/eraseName.png',
         password: '../img/google/pocoM3/password.png',
         confirmPassword: '../img/google/pocoM3/confirmPassword.png',
@@ -432,7 +441,7 @@ const pocoM3 = {
         agreeServices: '../img/google/pocoM3/agreeServices.png',
         agreeInformation: '../img/google/pocoM3/agreeInformation.png',
         createAccount2: '../img/google/pocoM3/createAccount2.png',
-        logo: '../img/google/pocoM3/logo.png'
+        search: '../img/google/pocoM3/search.png'
     }
     // 참고
     // poco의 경우 adbkeybord를 사용하면 언어 및 입력에서 에러가 난다.
@@ -458,6 +467,16 @@ async function main() {
     const pocoAdb = ADB.new(pocoCode);
 
     for (let i = 0; i < 200; i++) {
+        console.log('waiting...');
+        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
+
+        await s10Adb.lteOff();
+        await s10Adb.lteOn();
+
+        await s10Adb.unlock();
+        await createGoogleAccount(s10Adb, s10);
+        await s10Adb.lock();
+
         await s10Adb.lteOff();
         await s10Adb.lteOn();
 
@@ -486,15 +505,13 @@ async function main() {
         await createGoogleAccount(pocoAdb, pocoM3);
         await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
         await pocoAdb.lock();
-
-        await Tools.waitSec(Tools.getRandomNumberInRange(3600, 4600));
     }
 }
 
 async function test() {
-    const a5Code = '4e05ca11'
-    const a5Adb = ADB.new(a5Code);
-    await a5Adb.captureImage();
+    const s6Code = '06157df644e02127'
+    const s6Adb = ADB.new(s6Code);
+    await s6Adb.captureImage();
 }
 
 async function waitRandom() {

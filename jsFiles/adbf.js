@@ -232,7 +232,11 @@ module.exports.new = function (deviceId) {
     //adb.unlock
     adb.unlock = async function (password) {
         await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 26');
-        await CMD.exec('adb -s ' + deviceId + ' shell input touchscreen swipe 550 1200 550 400');
+        const dimentionsStr = await CMD.exec('adb -s ' + deviceId + ' shell wm size');
+        const dimention = dimentionsStr.match(new RegExp(' ([0-9]+x[0-9]+)'))[1].split('x')
+        const width = dimention[0];
+        const height = dimention[1];
+        await CMD.exec('adb -s ' + deviceId + ' shell input touchscreen swipe ' + width / 2 + ' ' + Number(height - 1) + ' ' + width / 2 + ' 1 100');
         await Tools.waitMilli(500);
         if (password) {
             await CMD.exec('adb -s ' + deviceId + ' shell input text ' + password);
