@@ -13,13 +13,15 @@ module.exports.new = function (deviceId) {
     adb.deviceId = deviceId;
 
     //adb.tapImage
-    adb.tapImage = async function (imageLocation, addX, addY, matchConfidence) {
+    adb.tapImage = async function (imageLocation, addX, addY, matchConfidence, holdMilliSec) {
         if (!addX)
             addX = 0;
         if (!addY)
             addY = 0;
         if (!matchConfidence)
             matchConfidence = 0.95;
+        if (!holdMilliSec)
+            holdMilliSec = 0;
 
         const screenImg = '../img/screen.png';
         // DeleteOriginal
@@ -60,27 +62,32 @@ module.exports.new = function (deviceId) {
         const cy = y + findImage.rows / 2 + addY;
         console.log("tapImg " + cx + " " + cy);
         // Click x, y
-        await CMD.exec('adb -s ' + deviceId + ' shell input tap ' + cx + ' ' + cy);
+        if (holdMilliSec == 0)
+            await CMD.exec('adb -s ' + deviceId + ' shell input tap ' + cx + ' ' + cy);
+        else
+            await CMD.exec('adb -s ' + deviceId + ' shell input swipe ' + cx + ' ' + cy + ' ' + cx + ' ' + cy + ' ' + holdMilliSec + ' ');
 
         return true;
     }
     //adb.tapUntilImgFound
-    adb.tapUntilImgFound = async function (img, retry) {
+    adb.tapUntilImgFound = async function (img, retry, holdMilliSec) {
         if (!retry)
             retry = 30;
+        if (!holdMilliSec)
+            holdMilliSec = 0;
         await Tools.waitMilli(Tools.getRandomNumberInRange(300, 800));
         var imageFound = false;
         if (Array.isArray(img)) {
             while (!imageFound && retry > 0) {
                 for (let i = 0; i < img.length; i++) {
-                    imageFound = await adb.tapImage(img[i]);
+                    imageFound = await adb.tapImage(img[i], 0, 0, 0, holdMilliSec);
                     if (imageFound) return;
                 }
                 retry--;
             }
         } else {
             while (!imageFound && retry > 0) {
-                imageFound = await adb.tapImage(img);
+                imageFound = await adb.tapImage(img, 0, 0, 0, holdMilliSec);
                 retry--;
             }
         }
@@ -183,6 +190,30 @@ module.exports.new = function (deviceId) {
     //http://www.dreamy.pe.kr/zbxe/CodeClip/164608
     adb.typeKeyCode = async function (keyCode) {
         await CMD.exec('adb -s ' + deviceId + ' shell input keyevent ' + keyCode);
+    }
+    //adb.getClipboard
+    adb.getClipboard = async function () {
+        try {
+            await CMD.exec('adb -s ' + deviceId + ' shell am start ca.zgrs.clipper/.Main');
+        } catch { }
+        await Tools.waitSec(1);
+        var clipboard = await CMD.exec('adb -s ' + deviceId + ' shell am broadcast -a clipper.get');
+        await CMD.exec('adb -s ' + deviceId + ' shell am force-stop ca.zgrs.clipper');
+        clipboard = clipboard.match(new RegExp('data="([\\s\\S]+)"\\\r\\\n'))[1];
+        return clipboard;
+    }
+    //adb.setClipboard
+    adb.setClipboard = async function (text) {
+        try {
+            await CMD.exec('adb -s ' + deviceId + ' shell am start ca.zgrs.clipper/.Main');
+        } catch { }
+        await Tools.waitSec(1);
+        await CMD.exec('adb -s ' + deviceId + " shell am broadcast -a clipper.set -e text '" + text + "'");
+        await CMD.exec('adb -s ' + deviceId + ' shell am force-stop ca.zgrs.clipper');
+    }
+    //adb.pasteClipboard
+    adb.pasteClipboard = async function () {
+        await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 279');
     }
     //adb.captureImage
     adb.captureImage = async function () {

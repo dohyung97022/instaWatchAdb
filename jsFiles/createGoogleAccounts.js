@@ -467,13 +467,11 @@ async function main() {
     const pocoAdb = ADB.new(pocoCode);
 
     for (let i = 0; i < 200; i++) {
-        console.log('waiting...');
-        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
 
         await s10Adb.lteOff();
         await s10Adb.lteOn();
 
-        await s10Adb.unlock();
+        await s10Adb.unlock('9347314da');
         await createGoogleAccount(s10Adb, s10);
         await s10Adb.lock();
 
@@ -505,6 +503,9 @@ async function main() {
         await createGoogleAccount(pocoAdb, pocoM3);
         await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
         await pocoAdb.lock();
+
+        console.log('waiting...');
+        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
     }
 }
 
@@ -517,6 +518,5 @@ async function test() {
 async function waitRandom() {
     await Tools.waitMilli(Tools.getRandomNumberInRange(400, 1500));
 }
-
 
 main();

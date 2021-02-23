@@ -1,0 +1,15 @@
+세로 모드
+
+화면 잠금 제한시간 10분
+
+앱 자동 업데이트 안함
+
+adbkeyboard
+https://github.com/senzhk/ADBKeyBoard
+
+clipper
+https://github.com/majido/clipper/issues/9
+
+samsung internet
+
+duckDuckGo
