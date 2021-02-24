@@ -102,6 +102,7 @@ async function createGoogleAccount(adb, device) {
         await adb.captureImage();
         console.log('error device = ' + device.name);
         console.log(e);
+        process.exit(1);
         return;
     }
 }
@@ -162,7 +163,8 @@ const s10 = {
         firstName: '../img/google/s10/firstName.png',
         lastName: '../img/google/s10/lastName.png',
         userName: '../img/google/s10/userName.png',
-        userName2: '../img/google/s10/userName2.png',
+        // userName2: '../img/google/s10/userName2.png',
+        newGmail: '../img/google/s10/newGmail.png',
         eraseName: '../img/google/s10/eraseName.png',
         password: '../img/google/s10/password.png',
         confirmPassword: '../img/google/s10/confirmPassword.png',
@@ -465,12 +467,10 @@ async function main() {
     const s6Code = '06157df644e02127'
     const s6Adb = ADB.new(s6Code);
 
-    const pocoCode = '26b22a7d1120'
-    const pocoAdb = ADB.new(pocoCode);
+    // const pocoCode = '26b22a7d1120'
+    // const pocoAdb = ADB.new(pocoCode);
 
     for (let i = 0; i < 200; i++) {
-        console.log('waiting...');
-        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
 
         await s10Adb.lteOff();
         await s10Adb.lteOn();
@@ -500,24 +500,27 @@ async function main() {
         await createGoogleAccount(s6Adb, s6);
         await s6Adb.lock();
 
-        await s10Adb.lteOff();
-        await s10Adb.lteOn();
+        // await s10Adb.lteOff();
+        // await s10Adb.lteOn();
 
-        await pocoAdb.unlock();
-        await createGoogleAccount(pocoAdb, pocoM3);
-        await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
-        await pocoAdb.lock();
+        // await pocoAdb.unlock();
+        // await createGoogleAccount(pocoAdb, pocoM3);
+        // await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
+        // await pocoAdb.lock();
+
+        console.log('waiting...');
+        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
     }
 }
 
 async function test() {
-    const s6Code = '06157df644e02127'
-    const s6Adb = ADB.new(s6Code);
-    await s6Adb.captureImage();
+    const pocoCode = '26b22a7d1120'
+    const pocoAdb = ADB.new(pocoCode);
+    await pocoAdb.unlock();
 }
 
 async function waitRandom() {
     await Tools.waitMilli(Tools.getRandomNumberInRange(400, 1500));
 }
 
-main();
+test();

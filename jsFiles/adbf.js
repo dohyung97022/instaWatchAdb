@@ -8,8 +8,6 @@ const { mainModule } = require("process");
 
 module.exports.new = function (deviceId) {
     const adb = {};
-    if (!deviceId)
-        deviceId = '192.168.43.1:5555';
     adb.deviceId = deviceId;
 
     //adb.tapImage
@@ -227,19 +225,6 @@ module.exports.new = function (deviceId) {
         await Tools.waitFileDelete(screenImg, 300, 50);
         await CMD.exec('adb -s ' + deviceId + ' exec-out screencap -p > ' + screenImg);
     }
-    //adb.logImage
-    adb.logImage = async function () {
-        const screenImg = '../img/log/screen.png';
-        // DeleteOriginal
-        try {
-            fs.unlinkSync(screenImg);
-        } catch (e) {
-        }
-
-        // // Wait for imageDelete
-        await Tools.waitFileDelete(screenImg, 300, 50);
-        await CMD.exec('adb -s ' + deviceId + ' exec-out screencap -p > ' + screenImg);
-    }
     //adb.openApp
     adb.openApp = async function (appName) {
         try {
@@ -274,21 +259,39 @@ module.exports.new = function (deviceId) {
     }
     //adb.unlock
     adb.unlock = async function (password) {
-        await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 26');
-        const dimentionsStr = await CMD.exec('adb -s ' + deviceId + ' shell wm size');
-        const dimention = dimentionsStr.match(new RegExp(' ([0-9]+x[0-9]+)'))[1].split('x')
-        const width = dimention[0];
-        const height = dimention[1];
-        await CMD.exec('adb -s ' + deviceId + ' shell input touchscreen swipe ' + width / 2 + ' ' + Number(height - 1) + ' ' + width / 2 + ' 1 100');
-        await Tools.waitMilli(500);
-        if (password) {
-            await CMD.exec('adb -s ' + deviceId + ' shell input text ' + password);
-            await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 66');
-        }
+        const checkLockedString = await CMD.exec('adb -s ' + deviceId + ' shell service call power 12');
+        const screenOn = checkLockedString.match(new RegExp('0([01])   '))[1];
+        if (screenOn == '0') {
+            await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 26');
+            const dimentionsStr = await CMD.exec('adb -s ' + deviceId + ' shell wm size');
+            const dimention = dimentionsStr.match(new RegExp(' ([0-9]+x[0-9]+)'))[1].split('x')
+            const width = dimention[0];
+            const height = dimention[1];
+            await CMD.exec('adb -s ' + deviceId + ' shell input touchscreen swipe ' + width / 2 + ' ' + Number(height - 1) + ' ' + width / 2 + ' 1 100');
+            await Tools.waitMilli(500);
+            if (password) {
+                await CMD.exec('adb -s ' + deviceId + ' shell input text ' + password);
+                await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 66');
+            }
+        } else console.log('device ' + deviceId + ' is already unlocked.')
     }
     //adb.lock
     adb.lock = async function () {
-        await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 26');
+        const checkLockedString = await CMD.exec('adb -s ' + deviceId + ' shell service call power 12');
+        const screenOn = checkLockedString.match(new RegExp('0([01])   '))[1];
+        if (screenOn == '1') {
+            await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 26');
+        }
+        else console.log('device ' + deviceId + ' is already locked.')
+    }
+    //adb.isLocked
+    adb.isLocked = async function () {
+        const checkLockedString = await CMD.exec('adb -s ' + deviceId + ' shell service call power 12');
+        const screenOn = checkLockedString.match(new RegExp('0([01])   '))[1];
+        if (screenOn == '0')
+            return true
+        if (screenOn == '1')
+            return false
     }
     //adb.setBasicKeyboard
     adb.setBasicKeyboard = async function (keyboard) {
