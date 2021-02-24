@@ -60,13 +60,12 @@ module.exports.new = function (deviceId) {
         const { maxLoc: { x, y } } = minMax;
         const cx = x + findImage.cols / 2 + addX;
         const cy = y + findImage.rows / 2 + addY;
-        console.log("tapImg " + cx + " " + cy);
+        console.log("Img x: " + cx + " y: " + cy);
         // Click x, y
         if (holdMilliSec == 0)
             await CMD.exec('adb -s ' + deviceId + ' shell input tap ' + cx + ' ' + cy);
         else
             await CMD.exec('adb -s ' + deviceId + ' shell input swipe ' + cx + ' ' + cy + ' ' + cx + ' ' + cy + ' ' + holdMilliSec + ' ');
-
         return true;
     }
     //adb.tapUntilImgFound
@@ -211,13 +210,26 @@ module.exports.new = function (deviceId) {
         await CMD.exec('adb -s ' + deviceId + " shell am broadcast -a clipper.set -e text '" + text + "'");
         await CMD.exec('adb -s ' + deviceId + ' shell am force-stop ca.zgrs.clipper');
     }
-    //adb.pasteClipboard
-    adb.pasteClipboard = async function () {
+    //adb.postClipboard
+    adb.postClipboard = async function () {
         await CMD.exec('adb -s ' + deviceId + ' shell input keyevent 279');
     }
     //adb.captureImage
     adb.captureImage = async function () {
         const screenImg = '../img/screen.png';
+        // DeleteOriginal
+        try {
+            fs.unlinkSync(screenImg);
+        } catch (e) {
+        }
+
+        // // Wait for imageDelete
+        await Tools.waitFileDelete(screenImg, 300, 50);
+        await CMD.exec('adb -s ' + deviceId + ' exec-out screencap -p > ' + screenImg);
+    }
+    //adb.logImage
+    adb.logImage = async function () {
+        const screenImg = '../img/log/screen.png';
         // DeleteOriginal
         try {
             fs.unlinkSync(screenImg);

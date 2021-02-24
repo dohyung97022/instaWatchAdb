@@ -386,8 +386,8 @@ const pocoM3 = {
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/agree.png');
-        // await Tools.waitMilli(500);
-        // await adb.tapUntilImgFound('../img/samsung/pocoM3/later.png');
+        await Tools.waitMilli(500);
+        await adb.tapImage('../img/samsung/pocoM3/later.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/settings.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/options.png');
         await adb.swipe(540, 2100, 540, 0, 1000);
@@ -399,6 +399,8 @@ const pocoM3 = {
         await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
+        await Tools.waitMilli(500);
+        await adb.tapImage('../img/samsung/pocoM3/later.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/betweenUrl.png');
         await adb.typeBasic('www.google.com');
         await adb.enter();
@@ -457,8 +459,8 @@ async function main() {
     const note5Code = '0915f948d3db1c05'
     const note5Adb = ADB.new(note5Code);
 
-    const a5Code = '4e05ca11'
-    const a5Adb = ADB.new(a5Code);
+    // const a5Code = '4e05ca11'
+    // const a5Adb = ADB.new(a5Code);
 
     const s6Code = '06157df644e02127'
     const s6Adb = ADB.new(s6Code);
@@ -467,6 +469,8 @@ async function main() {
     const pocoAdb = ADB.new(pocoCode);
 
     for (let i = 0; i < 200; i++) {
+        console.log('waiting...');
+        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
 
         await s10Adb.lteOff();
         await s10Adb.lteOn();
@@ -482,12 +486,12 @@ async function main() {
         await createGoogleAccount(note5Adb, note5);
         await note5Adb.lock();
 
-        await s10Adb.lteOff();
-        await s10Adb.lteOn();
+        // await s10Adb.lteOff();
+        // await s10Adb.lteOn();
 
-        await a5Adb.unlock();
-        await createGoogleAccount(a5Adb, a5);
-        await a5Adb.lock();
+        // await a5Adb.unlock();
+        // await createGoogleAccount(a5Adb, a5);
+        // await a5Adb.lock();
 
         await s10Adb.lteOff();
         await s10Adb.lteOn();
@@ -503,9 +507,6 @@ async function main() {
         await createGoogleAccount(pocoAdb, pocoM3);
         await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
         await pocoAdb.lock();
-
-        console.log('waiting...');
-        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
     }
 }
 
