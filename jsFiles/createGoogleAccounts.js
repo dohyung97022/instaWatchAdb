@@ -102,7 +102,6 @@ async function createGoogleAccount(adb, device) {
         await adb.captureImage();
         console.log('error device = ' + device.name);
         console.log(e);
-        process.exit(1);
         return;
     }
 }
@@ -381,7 +380,7 @@ const s6 = {
 const pocoM3 = {
     name: 'pocoM3',
     typeMinInterval: 100,
-    typeMaxInterval: 300,
+    typeMaxInterval: 200,
     setup: async function (adb) {
         await adb.clearAppData('com.sec.android.app.sbrowser');
         await Tools.waitSec(5);
@@ -454,6 +453,10 @@ const pocoM3 = {
 
 }
 
+async function waitRandom() {
+    await Tools.waitMilli(Tools.getRandomNumberInRange(400, 1500));
+}
+
 async function main() {
     const s10Code = 'R39M60041TD'
     const s10Adb = ADB.new(s10Code);
@@ -467,8 +470,8 @@ async function main() {
     const s6Code = '06157df644e02127'
     const s6Adb = ADB.new(s6Code);
 
-    // const pocoCode = '26b22a7d1120'
-    // const pocoAdb = ADB.new(pocoCode);
+    const pocoCode = '26b22a7d1120'
+    const pocoAdb = ADB.new(pocoCode);
 
     for (let i = 0; i < 200; i++) {
 
@@ -500,16 +503,16 @@ async function main() {
         await createGoogleAccount(s6Adb, s6);
         await s6Adb.lock();
 
-        // await s10Adb.lteOff();
-        // await s10Adb.lteOn();
+        await s10Adb.lteOff();
+        await s10Adb.lteOn();
 
-        // await pocoAdb.unlock();
-        // await createGoogleAccount(pocoAdb, pocoM3);
-        // await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
-        // await pocoAdb.lock();
+        await pocoAdb.unlock();
+        await createGoogleAccount(pocoAdb, pocoM3);
+        await pocoAdb.setBasicKeyboard('com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME');
+        await pocoAdb.lock();
 
         console.log('waiting...');
-        await Tools.waitSec(Tools.getRandomNumberInRange(1800, 2000));
+        await Tools.waitSec(Tools.getRandomNumberInRange(4600, 5600));
     }
 }
 
@@ -519,8 +522,6 @@ async function test() {
     await pocoAdb.unlock();
 }
 
-async function waitRandom() {
-    await Tools.waitMilli(Tools.getRandomNumberInRange(400, 1500));
-}
 
-test();
+
+main();

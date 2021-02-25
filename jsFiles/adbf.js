@@ -48,7 +48,7 @@ module.exports.new = function (deviceId) {
         const minMax = matched.minMaxLoc();
 
         // Check confidence
-        console.log(minMax.maxVal);
+        // console.log(minMax.maxVal);
         if (minMax.maxVal < matchConfidence) {
             console.log(imageLocation + ' not found');
             return false;
@@ -58,7 +58,7 @@ module.exports.new = function (deviceId) {
         const { maxLoc: { x, y } } = minMax;
         const cx = x + findImage.cols / 2 + addX;
         const cy = y + findImage.rows / 2 + addY;
-        console.log("Img x: " + cx + " y: " + cy);
+        // console.log("Img x: " + cx + " y: " + cy);
         // Click x, y
         if (holdMilliSec == 0)
             await CMD.exec('adb -s ' + deviceId + ' shell input tap ' + cx + ' ' + cy);
@@ -124,7 +124,7 @@ module.exports.new = function (deviceId) {
         const minMax = matched.minMaxLoc();
 
         // Check confidence
-        console.log(minMax.maxVal);
+        // console.log(minMax.maxVal);
         if (minMax.maxVal < matchConfidence) {
             console.log(imageLocation + ' not found');
             return false;

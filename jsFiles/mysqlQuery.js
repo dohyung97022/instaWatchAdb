@@ -126,6 +126,14 @@ module.exports.getInsertInstaAccountQuery = function (id, name, password, regist
     VALUE ('`+ id + `','` + name + `','` + password + `','` + registerEmail + `');`
     return query;
 }
+//getInsertInstaAccountByGooglePkQuery
+module.exports.getInsertInstaAccountByGooglePkQuery = function (id, name, password, registerEmail, googlePk) {
+    const query = `
+    INSERT INTO 
+    instagramId(id,name,password,registeredEmail,googlePk)
+    VALUE ('`+ id + `','` + name + `','` + password + `','` + registerEmail + `','` + googlePk + `');`
+    return query;
+}
 
 //getInsertFacebookAccountQuery
 module.exports.getInsertFacebookAccountQuery = function (id, name, password, registerEmail) {
@@ -170,4 +178,23 @@ module.exports.getGoogleIds = function () {
 module.exports.getRemoveGoogleId = function (id) {
     return `
     DELETE FROM instaWatch.googleId WHERE id = '`+ id + `';`
+}
+
+//getInstagramCreatableGoogleAccount
+module.exports.getInstagramCreatableGoogleAccount = function () {
+    return `
+    SELECT * FROM instaWatch.googleId
+    WHERE instaPk is null
+    ORDER BY pk ASC
+    LIMIT 1
+    `
+}
+
+//getInstagramCreatableGoogleAccount
+module.exports.getUpdateGoogleInstagramPk = function (googlePk, instaPk) {
+    return `
+    UPDATE instaWatch.googleId
+    SET instaPk = '`+ instaPk + `'
+    WHERE pk = '`+ googlePk + `';
+    `
 }

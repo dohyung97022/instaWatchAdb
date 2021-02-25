@@ -13,7 +13,7 @@ module.exports.exec = function (command) {
                 reject(standardError);
                 return;
             }
-            console.log(`standardOutput: ${standardOutput}`);
+            // console.log(`standardOutput: ${standardOutput}`);
             resolve(standardOutput);
         });
     });

@@ -1,0 +1,2 @@
+cd jsfiles
+node createGoogleAccounts.js
