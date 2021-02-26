@@ -72,7 +72,6 @@ module.exports.new = function (deviceId) {
             retry = 30;
         if (!holdMilliSec)
             holdMilliSec = 0;
-        await Tools.waitMilli(Tools.getRandomNumberInRange(300, 800));
         var imageFound = false;
         if (Array.isArray(img)) {
             while (!imageFound && retry > 0) {
@@ -90,7 +89,6 @@ module.exports.new = function (deviceId) {
         }
         if (imageFound == false)
             throw 'image ' + img + ' is not found!';
-        await Tools.waitMilli(Tools.getRandomNumberInRange(523, 1500));
     }
     // adb.findImage
     adb.findImage = async function (imageLocation, matchConfidence) {
@@ -122,6 +120,7 @@ module.exports.new = function (deviceId) {
 
         // Use minMaxLoc to locate the highest value (or lower, depending of the type of matching method)
         const minMax = matched.minMaxLoc();
+
 
         // Check confidence
         // console.log(minMax.maxVal);

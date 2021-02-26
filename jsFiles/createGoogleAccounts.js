@@ -512,7 +512,7 @@ async function main() {
         await pocoAdb.lock();
 
         console.log('waiting...');
-        await Tools.waitSec(Tools.getRandomNumberInRange(4600, 5600));
+        await Tools.waitSec(Tools.getRandomNumberInRange(5600, 6600));
     }
 }
 

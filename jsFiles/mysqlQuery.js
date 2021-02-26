@@ -1,11 +1,3 @@
-//get
-
-//getInstagramIdQuery
-module.exports.getInstagramIdQuery = function (id) {
-    const query = 'SELECT * FROM instagramId WHERE id =\'' + id + '\''
-    return query;
-}
-
 //getNotPostedRelatedPostsQuery
 module.exports.getNotPostedRelatedPostsQuery = function (id) {
     const query = `
@@ -56,7 +48,6 @@ module.exports.getUpdateActionBlockedQuery = function (id, blocked) {
     WHERE id = '`+ id + `';`
     return query;
 }
-
 
 //getInsertIpQuery
 module.exports.getInsertIpQuery = function (ip) {
@@ -180,6 +171,12 @@ module.exports.getRemoveGoogleId = function (id) {
     DELETE FROM instaWatch.googleId WHERE id = '`+ id + `';`
 }
 
+//getInstagramIdQuery
+module.exports.getInstagramIdQuery = function (id) {
+    const query = 'SELECT * FROM instagramId WHERE id =\'' + id + '\''
+    return query;
+}
+
 //getInstagramCreatableGoogleAccount
 module.exports.getInstagramCreatableGoogleAccount = function () {
     return `
@@ -197,4 +194,25 @@ module.exports.getUpdateGoogleInstagramPk = function (googlePk, instaPk) {
     SET instaPk = '`+ instaPk + `'
     WHERE pk = '`+ googlePk + `';
     `
+}
+
+//getMostWaitedInstagramAccount
+module.exports.getMostWaitedInstagramAccount = function () {
+    const query = `
+    SELECT * FROM instaWatch.instagramId
+    WHERE blocked = 0
+    ORDER BY lastActionTime ASC
+    LIMIT 1;
+    `
+    return query;
+}
+
+//getUpdateInstagramActionTime
+module.exports.getUpdateInstagramActionTime = function (pk) {
+    const query = `
+    UPDATE instaWatch.instagramId
+    SET lastActionTime=CURRENT_TIME()
+    WHERE pk = '`+ pk + `';
+    `
+    return query;
 }
