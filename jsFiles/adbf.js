@@ -21,7 +21,7 @@ module.exports.new = function (deviceId) {
         if (!holdMilliSec)
             holdMilliSec = 0;
 
-        const screenImg = '../img/screen.png';
+        const screenImg = '../img/mobile/screen.png';
         // DeleteOriginal
         try {
             fs.unlinkSync(screenImg);
@@ -95,7 +95,7 @@ module.exports.new = function (deviceId) {
         if (!matchConfidence)
             matchConfidence = 0.95;
 
-        const screenImg = '../img/screen.png';
+        const screenImg = '../img/mobile/screen.png';
         // DeleteOriginal
         try {
             fs.unlinkSync(screenImg);
@@ -213,7 +213,7 @@ module.exports.new = function (deviceId) {
     }
     //adb.captureImage
     adb.captureImage = async function () {
-        const screenImg = '../img/screen.png';
+        const screenImg = '../img/mobile/screen.png';
         // DeleteOriginal
         try {
             fs.unlinkSync(screenImg);

@@ -116,37 +116,37 @@ const s10 = {
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
 
-        await adb.tapUntilImgFound('../img/samsung/agree.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/agree.png');
         await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/later.png');
-        await adb.tapUntilImgFound('../img/samsung/settings.png');
-        await adb.tapUntilImgFound('../img/samsung/lightMode.png');
-        await adb.tapUntilImgFound('../img/samsung/settings.png');
-        await adb.tapUntilImgFound('../img/samsung/options.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/later.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/settings.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/lightMode.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/settings.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/options.png');
         await adb.swipe(550, 2000, 550, 0, 1000);
         await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/personalInfo.png');
-        await adb.tapUntilImgFound('../img/samsung/userNameAndPassword.png');
-        await adb.tapUntilImgFound('../img/samsung/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/back.png');
-        await adb.tapUntilImgFound('../img/samsung/back.png');
-        await adb.tapUntilImgFound('../img/samsung/back.png');
-        await adb.tapUntilImgFound('../img/samsung/betweenUrl.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/personalInfo.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/userNameAndPassword.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/betweenUrl.png');
         await adb.typeBasic('www.google.com');
         await adb.enter();
     },
     dropdown: async function (adb) {
-        await adb.tapUntilImgFound('../img/google/s10/month.png');
+        await adb.tapUntilImgFound('../img/mobile/google/s10/month.png');
         await waitRandom();
         await adb.swipe(550, 2100, 550, Tools.getRandomNumberInRange(1630, 2100), 200);
         await Tools.waitSec(3);
         await adb.tapLocation(550, Tools.getRandomNumberInRange(1650, 2080));
-        await adb.tapImage('../img/samsung/dropdownComplete.png');
+        await adb.tapImage('../img/mobile/samsung/dropdownComplete.png');
 
-        await adb.tapUntilImgFound('../img/google/s10/sex.png');
-        await adb.tapImage('../img/samsung/dropdownDoNotShow.png');
-        await adb.tapImage('../img/samsung/dropdownComplete.png');
+        await adb.tapUntilImgFound('../img/mobile/google/s10/sex.png');
+        await adb.tapImage('../img/mobile/samsung/dropdownDoNotShow.png');
+        await adb.tapImage('../img/mobile/samsung/dropdownComplete.png');
     },
     randomScrollDown: async function (adb) {
         await adb.swipe(
@@ -156,25 +156,25 @@ const s10 = {
             Tools.getRandomNumberInRange(1000, 680), 500);
     },
     googleImages: {
-        login: '../img/google/s10/login.png',
-        createAccount: '../img/google/s10/createAccount.png',
-        myAccount: '../img/google/s10/myAccount.png',
-        firstName: '../img/google/s10/firstName.png',
-        lastName: '../img/google/s10/lastName.png',
-        userName: '../img/google/s10/userName.png',
-        // userName2: '../img/google/s10/userName2.png',
-        newGmail: '../img/google/s10/newGmail.png',
-        eraseName: '../img/google/s10/eraseName.png',
-        password: '../img/google/s10/password.png',
-        confirmPassword: '../img/google/s10/confirmPassword.png',
-        next: '../img/google/s10/next.png',
-        phoneChoice: '../img/google/s10/phoneChoice.png',
-        year: '../img/google/s10/year.png',
-        date: '../img/google/s10/date.png',
-        agreeServices: '../img/google/s10/agreeServices.png',
-        agreeInformation: '../img/google/s10/agreeInformation.png',
-        createAccount2: '../img/google/s10/createAccount2.png',
-        search: '../img/google/s10/search.png'
+        login: '../img/mobile/google/s10/login.png',
+        createAccount: '../img/mobile/google/s10/createAccount.png',
+        myAccount: '../img/mobile/google/s10/myAccount.png',
+        firstName: '../img/mobile/google/s10/firstName.png',
+        lastName: '../img/mobile/google/s10/lastName.png',
+        userName: '../img/mobile/google/s10/userName.png',
+        // userName2: '../img/mobile/google/s10/userName2.png',
+        newGmail: '../img/mobile/google/s10/newGmail.png',
+        eraseName: '../img/mobile/google/s10/eraseName.png',
+        password: '../img/mobile/google/s10/password.png',
+        confirmPassword: '../img/mobile/google/s10/confirmPassword.png',
+        next: '../img/mobile/google/s10/next.png',
+        phoneChoice: '../img/mobile/google/s10/phoneChoice.png',
+        year: '../img/mobile/google/s10/year.png',
+        date: '../img/mobile/google/s10/date.png',
+        agreeServices: '../img/mobile/google/s10/agreeServices.png',
+        agreeInformation: '../img/mobile/google/s10/agreeInformation.png',
+        createAccount2: '../img/mobile/google/s10/createAccount2.png',
+        search: '../img/mobile/google/s10/search.png'
     }
 }
 const note5 = {
@@ -187,32 +187,32 @@ const note5 = {
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
 
-        await adb.tapUntilImgFound('../img/samsung/note5/agree.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/agree.png');
         try {
-            await adb.tapUntilImgFound('../img/samsung/note5/later.png');
+            await adb.tapUntilImgFound('../img/mobile/samsung/note5/later.png');
         } catch (e) { }
-        await adb.tapUntilImgFound('../img/samsung/note5/settings.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/options.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/settings.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/options.png');
         await adb.swipe(550, 1800, 550, 0, 1000);
         await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/note5/personalInfo.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/userNameAndPassword.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/back.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/back.png');
-        await adb.tapUntilImgFound('../img/samsung/note5/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/personalInfo.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/userNameAndPassword.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/note5/back.png');
     },
     dropdown: async function (adb) {
-        await adb.tapUntilImgFound('../img/google/note5/month.png');
+        await adb.tapUntilImgFound('../img/mobile/google/note5/month.png');
         await waitRandom();
         await adb.swipe(550, 1800, 550, Tools.getRandomNumberInRange(1400, 1800), 200);
         await Tools.waitSec(3);
         await adb.tapLocation(550, Tools.getRandomNumberInRange(1400, 1800));
-        await adb.tapImage('../img/samsung/note5/dropdownComplete.png');
-        await adb.tapUntilImgFound('../img/google/note5/sex.png');
-        await adb.tapImage('../img/samsung/note5/dropdownDoNotShow.png');
-        await adb.tapImage('../img/samsung/note5/dropdownComplete.png');
+        await adb.tapImage('../img/mobile/samsung/note5/dropdownComplete.png');
+        await adb.tapUntilImgFound('../img/mobile/google/note5/sex.png');
+        await adb.tapImage('../img/mobile/samsung/note5/dropdownDoNotShow.png');
+        await adb.tapImage('../img/mobile/samsung/note5/dropdownComplete.png');
     },
     randomScrollDown: async function (adb) {
         await adb.swipe(
@@ -222,25 +222,25 @@ const note5 = {
             Tools.getRandomNumberInRange(900, 680), 500);
     },
     googleImages: {
-        login: '../img/google/note5/login.png',
-        createAccount: '../img/google/note5/createAccount.png',
-        myAccount: '../img/google/note5/myAccount.png',
-        firstName: '../img/google/note5/firstName.png',
-        lastName: '../img/google/note5/lastName.png',
-        userName: '../img/google/note5/userName.png',
-        // userName2: '../img/google/note5/userName2.png',
-        newGmail: '../img/google/note5/newGmail.png',
-        eraseName: '../img/google/note5/eraseName.png',
-        password: '../img/google/note5/password.png',
-        confirmPassword: '../img/google/note5/confirmPassword.png',
-        next: '../img/google/note5/next.png',
-        phoneChoice: '../img/google/note5/phoneChoice.png',
-        year: '../img/google/note5/year.png',
-        date: '../img/google/note5/date.png',
-        agreeServices: '../img/google/note5/agreeServices.png',
-        agreeInformation: '../img/google/note5/agreeInformation.png',
-        createAccount2: '../img/google/note5/createAccount2.png',
-        search: '../img/google/note5/search.png'
+        login: '../img/mobile/google/note5/login.png',
+        createAccount: '../img/mobile/google/note5/createAccount.png',
+        myAccount: '../img/mobile/google/note5/myAccount.png',
+        firstName: '../img/mobile/google/note5/firstName.png',
+        lastName: '../img/mobile/google/note5/lastName.png',
+        userName: '../img/mobile/google/note5/userName.png',
+        // userName2: '../img/mobile/google/note5/userName2.png',
+        newGmail: '../img/mobile/google/note5/newGmail.png',
+        eraseName: '../img/mobile/google/note5/eraseName.png',
+        password: '../img/mobile/google/note5/password.png',
+        confirmPassword: '../img/mobile/google/note5/confirmPassword.png',
+        next: '../img/mobile/google/note5/next.png',
+        phoneChoice: '../img/mobile/google/note5/phoneChoice.png',
+        year: '../img/mobile/google/note5/year.png',
+        date: '../img/mobile/google/note5/date.png',
+        agreeServices: '../img/mobile/google/note5/agreeServices.png',
+        agreeInformation: '../img/mobile/google/note5/agreeInformation.png',
+        createAccount2: '../img/mobile/google/note5/createAccount2.png',
+        search: '../img/mobile/google/note5/search.png'
     }
 }
 const a5 = {
@@ -253,22 +253,22 @@ const a5 = {
         await adb.openApp('com.android.chrome');
         await adb.type('');
 
-        await adb.tapUntilImgFound('../img/chrome/a5/check.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/agreeAndContinue.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/skip.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/options.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/settings.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/savePassword.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/toggle.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/toggle.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/back.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/back.png');
-        await adb.tapUntilImgFound('../img/chrome/a5/urlTab.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/check.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/agreeAndContinue.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/skip.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/options.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/settings.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/savePassword.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/back.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/back.png');
+        await adb.tapUntilImgFound('../img/mobile/chrome/a5/urlTab.png');
         await adb.typeBasic('www.google.co.kr');
         await adb.enter();
     },
     dropdown: async function (adb) {
-        await adb.tapUntilImgFound('../img/google/a5/month.png');
+        await adb.tapUntilImgFound('../img/mobile/google/a5/month.png');
         await waitRandom();
         await adb.swipe(550, 1200, 550, Tools.getRandomNumberInRange(500, 1200), 200);
         await Tools.waitSec(3);
@@ -278,8 +278,8 @@ const a5 = {
             Tools.getRandomNumberInRange(1100, 1250),
             Tools.getRandomNumberInRange(100, 650),
             Tools.getRandomNumberInRange(150, 250), 500);
-        await adb.tapUntilImgFound('../img/google/a5/sex.png');
-        await adb.tapImage('../img/samsung/a5/dropdownDoNotShow.png');
+        await adb.tapUntilImgFound('../img/mobile/google/a5/sex.png');
+        await adb.tapImage('../img/mobile/samsung/a5/dropdownDoNotShow.png');
     },
     randomScrollDown: async function (adb) {
         await adb.swipe(
@@ -289,25 +289,25 @@ const a5 = {
             Tools.getRandomNumberInRange(200, 400), 500);
     },
     googleImages: {
-        login: '../img/google/a5/login.png',
-        createAccount: '../img/google/a5/createAccount.png',
-        myAccount: '../img/google/a5/myAccount.png',
-        firstName: '../img/google/a5/firstName.png',
-        lastName: '../img/google/a5/lastName.png',
-        userName: '../img/google/a5/userName.png',
-        // userName2: '../img/google/a5/userName2.png',
-        newGmail: '../img/google/a5/newGmail.png',
-        eraseName: '../img/google/a5/eraseName.png',
-        password: '../img/google/a5/password.png',
-        confirmPassword: '../img/google/a5/confirmPassword.png',
-        next: '../img/google/a5/next.png',
-        phoneChoice: '../img/google/a5/phoneChoice.png',
-        year: '../img/google/a5/year.png',
-        date: '../img/google/a5/date.png',
-        agreeServices: '../img/google/a5/agreeServices.png',
-        agreeInformation: '../img/google/a5/agreeInformation.png',
-        createAccount2: '../img/google/a5/createAccount2.png',
-        search: '../img/google/a5/search.png'
+        login: '../img/mobile/google/a5/login.png',
+        createAccount: '../img/mobile/google/a5/createAccount.png',
+        myAccount: '../img/mobile/google/a5/myAccount.png',
+        firstName: '../img/mobile/google/a5/firstName.png',
+        lastName: '../img/mobile/google/a5/lastName.png',
+        userName: '../img/mobile/google/a5/userName.png',
+        // userName2: '../img/mobile/google/a5/userName2.png',
+        newGmail: '../img/mobile/google/a5/newGmail.png',
+        eraseName: '../img/mobile/google/a5/eraseName.png',
+        password: '../img/mobile/google/a5/password.png',
+        confirmPassword: '../img/mobile/google/a5/confirmPassword.png',
+        next: '../img/mobile/google/a5/next.png',
+        phoneChoice: '../img/mobile/google/a5/phoneChoice.png',
+        year: '../img/mobile/google/a5/year.png',
+        date: '../img/mobile/google/a5/date.png',
+        agreeServices: '../img/mobile/google/a5/agreeServices.png',
+        agreeInformation: '../img/mobile/google/a5/agreeInformation.png',
+        createAccount2: '../img/mobile/google/a5/createAccount2.png',
+        search: '../img/mobile/google/a5/search.png'
     }
 }
 const s6 = {
@@ -319,34 +319,34 @@ const s6 = {
         await Tools.waitSec(5);
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
-        await adb.tapUntilImgFound('../img/samsung/s6/agree.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/settings.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/options.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/agree.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/settings.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/options.png');
         await adb.swipe(720, 2500, 720, 0, 1000);
         await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/s6/personalInfo.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/personalInfo.png');
         await adb.swipe(720, 2500, 720, 0, 1000);
         await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/s6/userNameAndPassword.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/back.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/back.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/back.png');
-        await adb.tapUntilImgFound('../img/samsung/s6/betweenUrl.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/userNameAndPassword.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/s6/betweenUrl.png');
         await adb.typeBasic('www.google.co.kr');
         await adb.enter();
     },
     dropdown: async function (adb) {
-        await adb.tapUntilImgFound('../img/google/s6/month.png');
+        await adb.tapUntilImgFound('../img/mobile/google/s6/month.png');
         await waitRandom();
         await adb.swipe(720, 2400, 720, Tools.getRandomNumberInRange(1800, 2400), 200);
         await Tools.waitSec(3);
         await adb.tapLocation(550, Tools.getRandomNumberInRange(1800, 2400));
-        await adb.tapImage('../img/samsung/s6/dropdownComplete.png');
-        await adb.tapUntilImgFound('../img/google/s6/sex.png');
-        await adb.tapImage('../img/samsung/s6/dropdownDoNotShow.png');
-        await adb.tapImage('../img/samsung/s6/dropdownComplete.png');
+        await adb.tapImage('../img/mobile/samsung/s6/dropdownComplete.png');
+        await adb.tapUntilImgFound('../img/mobile/google/s6/sex.png');
+        await adb.tapImage('../img/mobile/samsung/s6/dropdownDoNotShow.png');
+        await adb.tapImage('../img/mobile/samsung/s6/dropdownComplete.png');
     },
     randomScrollDown: async function (adb) {
         await adb.swipe(
@@ -356,25 +356,25 @@ const s6 = {
             Tools.getRandomNumberInRange(300, 700), 500);
     },
     googleImages: {
-        login: '../img/google/s6/login.png',
-        createAccount: '../img/google/s6/createAccount.png',
-        myAccount: '../img/google/s6/myAccount.png',
-        firstName: '../img/google/s6/firstName.png',
-        lastName: '../img/google/s6/lastName.png',
-        userName: '../img/google/s6/userName.png',
-        // userName2: '../img/google/s6/userName2.png',
-        newGmail: '../img/google/s6/newGmail.png',
-        eraseName: '../img/google/s6/eraseName.png',
-        password: '../img/google/s6/password.png',
-        confirmPassword: '../img/google/s6/confirmPassword.png',
-        next: '../img/google/s6/next.png',
-        phoneChoice: '../img/google/s6/phoneChoice.png',
-        year: '../img/google/s6/year.png',
-        date: '../img/google/s6/date.png',
-        agreeServices: '../img/google/s6/agreeServices.png',
-        agreeInformation: '../img/google/s6/agreeInformation.png',
-        createAccount2: '../img/google/s6/createAccount2.png',
-        search: '../img/google/s6/search.png'
+        login: '../img/mobile/google/s6/login.png',
+        createAccount: '../img/mobile/google/s6/createAccount.png',
+        myAccount: '../img/mobile/google/s6/myAccount.png',
+        firstName: '../img/mobile/google/s6/firstName.png',
+        lastName: '../img/mobile/google/s6/lastName.png',
+        userName: '../img/mobile/google/s6/userName.png',
+        // userName2: '../img/mobile/google/s6/userName2.png',
+        newGmail: '../img/mobile/google/s6/newGmail.png',
+        eraseName: '../img/mobile/google/s6/eraseName.png',
+        password: '../img/mobile/google/s6/password.png',
+        confirmPassword: '../img/mobile/google/s6/confirmPassword.png',
+        next: '../img/mobile/google/s6/next.png',
+        phoneChoice: '../img/mobile/google/s6/phoneChoice.png',
+        year: '../img/mobile/google/s6/year.png',
+        date: '../img/mobile/google/s6/date.png',
+        agreeServices: '../img/mobile/google/s6/agreeServices.png',
+        agreeInformation: '../img/mobile/google/s6/agreeInformation.png',
+        createAccount2: '../img/mobile/google/s6/createAccount2.png',
+        search: '../img/mobile/google/s6/search.png'
     }
 }
 const pocoM3 = {
@@ -386,37 +386,37 @@ const pocoM3 = {
         await Tools.waitSec(5);
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/agree.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/agree.png');
         await Tools.waitMilli(2000);
-        await adb.tapImage('../img/samsung/pocoM3/later.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/settings.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/options.png');
+        await adb.tapImage('../img/mobile/samsung/pocoM3/later.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/settings.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/options.png');
         await adb.swipe(540, 2100, 540, 0, 1000);
         await Tools.waitMilli(500);
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/personalInfo.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/userNameAndPassword.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/toggle.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/personalInfo.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/userNameAndPassword.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/toggle.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/back.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/back.png');
         await Tools.waitMilli(500);
-        await adb.tapImage('../img/samsung/pocoM3/later.png');
-        await adb.tapUntilImgFound('../img/samsung/pocoM3/betweenUrl.png');
+        await adb.tapImage('../img/mobile/samsung/pocoM3/later.png');
+        await adb.tapUntilImgFound('../img/mobile/samsung/pocoM3/betweenUrl.png');
         await adb.typeBasic('www.google.com');
         await adb.enter();
 
     },
     dropdown: async function (adb) {
-        await adb.tapUntilImgFound('../img/google/pocoM3/month.png');
+        await adb.tapUntilImgFound('../img/mobile/google/pocoM3/month.png');
         await waitRandom();
         await adb.swipe(540, 2090, 540, Tools.getRandomNumberInRange(1800, 2090), 200);
         await Tools.waitSec(3);
         await adb.tapLocation(540, Tools.getRandomNumberInRange(1680, 2090));
-        await adb.tapImage('../img/samsung/pocoM3/dropdownComplete.png');
-        await adb.tapUntilImgFound('../img/google/pocoM3/sex.png');
-        await adb.tapImage('../img/samsung/pocoM3/dropdownDoNotShow.png');
-        await adb.tapImage('../img/samsung/pocoM3/dropdownComplete.png');
+        await adb.tapImage('../img/mobile/samsung/pocoM3/dropdownComplete.png');
+        await adb.tapUntilImgFound('../img/mobile/google/pocoM3/sex.png');
+        await adb.tapImage('../img/mobile/samsung/pocoM3/dropdownDoNotShow.png');
+        await adb.tapImage('../img/mobile/samsung/pocoM3/dropdownComplete.png');
     },
     randomScrollDown: async function (adb) {
         await adb.swipe(
@@ -426,25 +426,25 @@ const pocoM3 = {
             Tools.getRandomNumberInRange(400, 700), 500);
     },
     googleImages: {
-        login: '../img/google/pocoM3/login.png',
-        createAccount: '../img/google/pocoM3/createAccount.png',
-        myAccount: '../img/google/pocoM3/myAccount.png',
-        firstName: '../img/google/pocoM3/firstName.png',
-        lastName: '../img/google/pocoM3/lastName.png',
-        userName: '../img/google/pocoM3/userName.png',
-        // userName2: '../img/google/pocoM3/userName2.png',
-        newGmail: '../img/google/pocoM3/newGmail.png',
-        eraseName: '../img/google/pocoM3/eraseName.png',
-        password: '../img/google/pocoM3/password.png',
-        confirmPassword: '../img/google/pocoM3/confirmPassword.png',
-        next: '../img/google/pocoM3/next.png',
-        phoneChoice: '../img/google/pocoM3/phoneChoice.png',
-        year: '../img/google/pocoM3/year.png',
-        date: '../img/google/pocoM3/date.png',
-        agreeServices: '../img/google/pocoM3/agreeServices.png',
-        agreeInformation: '../img/google/pocoM3/agreeInformation.png',
-        createAccount2: '../img/google/pocoM3/createAccount2.png',
-        search: '../img/google/pocoM3/search.png'
+        login: '../img/mobile/google/pocoM3/login.png',
+        createAccount: '../img/mobile/google/pocoM3/createAccount.png',
+        myAccount: '../img/mobile/google/pocoM3/myAccount.png',
+        firstName: '../img/mobile/google/pocoM3/firstName.png',
+        lastName: '../img/mobile/google/pocoM3/lastName.png',
+        userName: '../img/mobile/google/pocoM3/userName.png',
+        // userName2: '../img/mobile/google/pocoM3/userName2.png',
+        newGmail: '../img/mobile/google/pocoM3/newGmail.png',
+        eraseName: '../img/mobile/google/pocoM3/eraseName.png',
+        password: '../img/mobile/google/pocoM3/password.png',
+        confirmPassword: '../img/mobile/google/pocoM3/confirmPassword.png',
+        next: '../img/mobile/google/pocoM3/next.png',
+        phoneChoice: '../img/mobile/google/pocoM3/phoneChoice.png',
+        year: '../img/mobile/google/pocoM3/year.png',
+        date: '../img/mobile/google/pocoM3/date.png',
+        agreeServices: '../img/mobile/google/pocoM3/agreeServices.png',
+        agreeInformation: '../img/mobile/google/pocoM3/agreeInformation.png',
+        createAccount2: '../img/mobile/google/pocoM3/createAccount2.png',
+        search: '../img/mobile/google/pocoM3/search.png'
     }
     // 참고
     // poco의 경우 adbkeybord를 사용하면 언어 및 입력에서 에러가 난다.
@@ -525,3 +525,4 @@ async function test() {
 
 
 main();
+
