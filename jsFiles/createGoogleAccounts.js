@@ -387,7 +387,7 @@ const pocoM3 = {
         await adb.openApp('com.sec.android.app.sbrowser');
         await adb.type('');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/agree.png');
-        await Tools.waitMilli(500);
+        await Tools.waitMilli(2000);
         await adb.tapImage('../img/samsung/pocoM3/later.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/settings.png');
         await adb.tapUntilImgFound('../img/samsung/pocoM3/options.png');
@@ -475,19 +475,19 @@ async function main() {
 
     for (let i = 0; i < 200; i++) {
 
-        await s10Adb.lteOff();
-        await s10Adb.lteOn();
+        // await s10Adb.lteOff();
+        // await s10Adb.lteOn();
 
-        await s10Adb.unlock('9347314da');
-        await createGoogleAccount(s10Adb, s10);
-        await s10Adb.lock();
+        // await s10Adb.unlock('9347314da');
+        // await createGoogleAccount(s10Adb, s10);
+        // await s10Adb.lock();
 
-        await s10Adb.lteOff();
-        await s10Adb.lteOn();
+        // await s10Adb.lteOff();
+        // await s10Adb.lteOn();
 
-        await note5Adb.unlock();
-        await createGoogleAccount(note5Adb, note5);
-        await note5Adb.lock();
+        // await note5Adb.unlock();
+        // await createGoogleAccount(note5Adb, note5);
+        // await note5Adb.lock();
 
         // await s10Adb.lteOff();
         // await s10Adb.lteOn();
@@ -496,12 +496,12 @@ async function main() {
         // await createGoogleAccount(a5Adb, a5);
         // await a5Adb.lock();
 
-        await s10Adb.lteOff();
-        await s10Adb.lteOn();
+        // await s10Adb.lteOff();
+        // await s10Adb.lteOn();
 
-        await s6Adb.unlock();
-        await createGoogleAccount(s6Adb, s6);
-        await s6Adb.lock();
+        // await s6Adb.unlock();
+        // await createGoogleAccount(s6Adb, s6);
+        // await s6Adb.lock();
 
         await s10Adb.lteOff();
         await s10Adb.lteOn();
