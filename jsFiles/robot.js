@@ -4,12 +4,17 @@ const cv = require('opencv4nodejs');
 const Tools = require('./tools');
 const screenshot = require('screenshot-desktop')
 const spawn = require("child_process").spawn;
+const CMD = require("./cmd");
 
 const screenImg = '../img/windows/screen.png';
 //robot.click
 module.exports.click = async function (x, y) {
     Robot.moveMouse(x, y);
     Robot.mouseClick('left');
+}
+//robot.scroll
+module.exports.scroll = async function (gravity, duration) {
+    await CMD.exec('..\\pythonExe\\scroll\\scroll.exe --gravity ' + gravity + ' --duration ' + duration);
 }
 //robot.clickImage
 module.exports.clickImage = async function (imageLocation, addX, addY, matchConfidence) {
@@ -60,6 +65,57 @@ module.exports.clickImage = async function (imageLocation, addX, addY, matchConf
     // Click x, y
     Robot.moveMouse(cx, cy);
     Robot.mouseClick('left');
+
+    return true;
+}
+//robot.hoverImage
+module.exports.hoverImage = async function (imageLocation, addX, addY, matchConfidence) {
+    if (!addX)
+        addX = 0;
+    if (!addY)
+        addY = 0;
+    if (!matchConfidence)
+        matchConfidence = 0.95;
+
+    // DeleteOriginal
+    try {
+        fs.unlinkSync(screenImg);
+    } catch (e) {
+    }
+
+    // // Wait for imageDelete
+    await Tools.waitFileDelete(screenImg, 300, 50);
+
+    // Get Screen
+    await screenshot({ filename: screenImg });
+
+    // Wait for imageLoad
+    await Tools.waitFileExist(screenImg, 300, 50);
+
+    // Load images in cv
+    const originalImage = await cv.imreadAsync(screenImg);
+    const findImage = await cv.imreadAsync(imageLocation);
+
+    // Get Matched
+    const matched = originalImage.matchTemplate(findImage, 5);
+
+    // Use minMaxLoc to locate the highest value (or lower, depending of the type of matching method)
+    const minMax = matched.minMaxLoc();
+
+    // Check confidence
+    // console.log(minMax.maxVal);
+    if (minMax.maxVal < matchConfidence) {
+        console.log(imageLocation + ' not found');
+        return false;
+    }
+
+    // Get click x, y
+    const { maxLoc: { x, y } } = minMax;
+    const cx = x + findImage.cols / 2 + addX;
+    const cy = y + findImage.rows / 2 + addY;
+    // console.log("Img x: " + cx + " y: " + cy);
+    // Click x, y
+    Robot.moveMouse(cx, cy);
 
     return true;
 }
