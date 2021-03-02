@@ -29,10 +29,10 @@ module.exports.clickImage = async function (imageLocation, addX, addY, matchConf
     // // Wait for imageDelete
     await Tools.waitFileDelete(screenImg, 300, 50);
 
-    // Get Mobile Screen
+    // Get Screen
     await screenshot({ filename: screenImg });
 
-    // Wait for imageDownload
+    // Wait for imageLoad
     await Tools.waitFileExist(screenImg, 300, 50);
 
     // Load images in cv
@@ -60,6 +60,45 @@ module.exports.clickImage = async function (imageLocation, addX, addY, matchConf
     // Click x, y
     Robot.moveMouse(cx, cy);
     Robot.mouseClick('left');
+
+    return true;
+}
+//robot.findImage
+module.exports.findImage = async function (imageLocation, matchConfidence) {
+    if (!matchConfidence)
+        matchConfidence = 0.95;
+
+    try {
+        fs.unlinkSync(screenImg);
+    } catch (e) {
+    }
+
+    // // Wait for imageDelete
+    await Tools.waitFileDelete(screenImg, 300, 50);
+
+    // Get Screen
+    await screenshot({ filename: screenImg });
+
+    // Wait for imageLoad
+    await Tools.waitFileExist(screenImg, 300, 50);
+
+    // Load images in cv
+    const originalImage = await cv.imreadAsync(screenImg);
+    const findImage = await cv.imreadAsync(imageLocation);
+
+    // Get Matched
+    const matched = originalImage.matchTemplate(findImage, 5);
+
+    // Use minMaxLoc to locate the highest value (or lower, depending of the type of matching method)
+    const minMax = matched.minMaxLoc();
+
+
+    // Check confidence
+    // console.log(minMax.maxVal);
+    if (minMax.maxVal < matchConfidence) {
+        console.log(imageLocation + ' not found');
+        return false;
+    }
 
     return true;
 }
@@ -147,20 +186,53 @@ module.exports.captureImage = async function () {
     await Tools.waitFileDelete(screenImg, 300, 50);
     screenshot({ filename: screenImg });
 }
+//robot.type
+module.exports.type = async function (message, minIntervalMillis, maxIntervalMillis, doReWrite) {
+    if (!minIntervalMillis)
+        minIntervalMillis = 100;
+    if (!maxIntervalMillis)
+        maxIntervalMillis = 300;
+    if (!doReWrite)
+        doReWrite = true;
+
+    for (const char of message) {
+        if (doReWrite) {
+            if (Math.random() < 0.05) {
+                await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
+                const randomChar = Tools.getRandomLettersOfLenFromPool(1, 'abcdefghijklmnopqrstuvwxyz');
+                Robot.typeString(randomChar);
+                await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
+                Robot.keyTap('backspace');
+            }
+        }
+        await Tools.waitMilli(Tools.getRandomNumberInRange(minIntervalMillis, maxIntervalMillis));
+        Robot.typeString(char);
+    }
+}
+//robot.typeBasic
+module.exports.typeBasic = async function (input) {
+    Robot.typeString(input);
+}
+//robot.enter
+module.exports.enter = async function () {
+    Robot.keyTap('enter');
+}
+//robot.delete
+module.exports.delete = async function () {
+    Robot.keyTap('backspace');
+}
 //robot.openExe
-module.exports.openExe = function (exeName) {
+module.exports.exec = function (exeName) {
     return spawn(exeName);
 }
 //robot.focusExe
-module.exports.focusExe = async function (process) {
+module.exports.focus = async function (process) {
 }
 //robot.killExe
-module.exports.killExe = async function (process) {
+module.exports.kill = async function (process) {
 }
 
 async function test() {
     const Robot = require("./robot");
-    Robot.clickUntilImgFound('../img/windows/chrome/refresh.png');
+    await Robot.clickUntilImgFound('../img/windows/chrome/refresh.png');
 }
-
-test();

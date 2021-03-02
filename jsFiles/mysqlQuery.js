@@ -216,3 +216,32 @@ module.exports.getUpdateInstagramActionTime = function (pk) {
     `
     return query;
 }
+
+//getAllUnassignedIncognitonId
+module.exports.getAllUnassignedIncognitonId = function () {
+    const query = `
+    SELECT * FROM instaWatch.incognitonId
+    WHERE assignedAmount < 10;
+    `
+    return query;
+}
+
+//getNullIncognitonPkInstagramId
+module.exports.getNullIncognitonPkInstagramId = function () {
+    const query = `
+    SELECT * FROM instaWatch.instagramId
+    WHERE incognitonPk IS NULL
+    LIMIT 1
+    `
+    return query;
+}
+
+//getSetInstagramIdIncognitonPk
+module.exports.getSetInstagramIdIncognitonPk = function (instagramPk, incognitonPk) {
+    const query = `
+    UPDATE instaWatch.instagramId
+    SET incognitonPk = `+ incognitonPk + `
+    WHERE  pk = `+ instagramPk + `
+    `
+    return query;
+}
