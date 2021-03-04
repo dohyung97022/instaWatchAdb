@@ -57,7 +57,7 @@ async function lteReset(adb, betweenWait, afterWait) {
     await Tools.waitSec(afterWait);
 }
 async function waitRandom() {
-    await Tools.waitMilli(Tools.getRandomNumberInRange(3000, 4500));
+    await Tools.waitMilli(Tools.getRandomNumberInRange(1000, 2000));
 }
 
 // ------------------------------- insta functions ---------------------------------
@@ -146,6 +146,7 @@ async function setup() {
                 await Robot.clickUntilImgFound('../img/windows/incogniton/continue.png');
                 continue;
             }
+
             await waitRandom();
             await Robot.clickUntilImgFound('../img/windows/chrome/instagram/saveInfo.png');
             await waitRandom();
@@ -182,9 +183,8 @@ async function follow() {
     await openIncogniton();
     for (const unUsedIncognitonId of unUsedIncognitonIds) {
         await loginIncogniton(unUsedIncognitonId.id, unUsedIncognitonId.password);
-
         // Incogniton과 연결된 아이디들 중 waitTime을 지난 아이디를 찾는다.
-        const betweenActionMinute = 60;
+        const betweenActionMinute = 180;
         mysql = await Mysql.new();
         let connectedInstaIds = await mysql.get(
             `SELECT * FROM instaWatch.instagramId
@@ -192,17 +192,79 @@ async function follow() {
             AND (NOW() - INTERVAL `+ betweenActionMinute + ` MINUTE) > lastActionTime
             ORDER BY lastActionTime ASC`
         );
+        await mysql.exec(
+            `UPDATE instaWatch.incognitonId
+            SET lastActionTime = NOW()
+            WHERE pk = `+ unUsedIncognitonId.pk + `
+            `
+        );
 
         // 연결한다.
         for (const connectedInstaId of connectedInstaIds) {
             await lteReset(adb);
             await openCromeFromIncogniton(connectedInstaId.id);
-            await Tools.waitSec(10);
+
+            await Robot.waitUntilImgFound(['../img/windows/chrome/instagram/search.png', '../img/windows/chrome/instagram/imNotARobot.png', '../img/windows/chrome/instagram/search.png']);
+
+            let isInGoogle = await Robot.findImage('../img/windows/chrome/google/search.png');
+            if (isInGoogle) {
+                await Robot.clickUntilImgFound('../img/windows/chrome/google/search.png');
+                await Tools.waitSec(1);
+                await Robot.typeBasic('www.instagram.com');
+                await Robot.enter();
+            }
+
             var isARobot = false;
             isARobot = await Robot.findImage('../img/windows/chrome/instagram/imNotARobot.png');
             if (isARobot)
                 console.log('I am a robot')
+
             else {
+                await Robot.clickUntilImgFound('../img/windows/chrome/instagram/search.png');
+                await waitRandom();
+                let keyword = Tools.getRandomFromArray(['#fitness', '#exercise', '#runner', '#athlete', '#gym', '#instarunners', '#bodybuilder', '#workout', '#fitnessjourney']);
+                await Robot.type(keyword);
+                await Tools.waitSec(3);
+                await waitRandom();
+                await Robot.clickUntilImgFound('../img/windows/chrome/instagram/firstHashtag.png', 0, 27);
+                await waitRandom();
+                const isMaxSize = await Robot.findImage('../img/windows/chrome/unMaximize.png')
+                if (!isMaxSize)
+                    await Robot.clickUntilImgFound('../img/windows/chrome/maximize.png');
+                await waitRandom();
+                await Robot.clickUntilImgFound('../img/windows/chrome/instagram/popularPosts.png');
+                await Robot.scroll(-100, 3);
+
+                var isInPost = false;
+                while (!isInPost) {
+                    await Robot.clickImage('../img/windows/chrome/instagram/search.png', Tools.getRandomNumberInRange(-466, 454), Tools.getRandomNumberInRange(36, 886));
+                    await Tools.waitSec(4);
+                    isInPost = await Robot.findImage('../img/windows/chrome/instagram/exitPost.png');
+                }
+                await waitRandom();
+                var hasNoLikes = await Robot.findImage('../img/windows/chrome/instagram/watched.png');
+                if (!hasNoLikes) hasNoLikes = await Robot.findImage('../img/windows/chrome/instagram/watched2.png');
+                if (!hasNoLikes) {
+                    await Robot.clickUntilImgFound(['../img/windows/chrome/instagram/postLikes.png', '../img/windows/chrome/instagram/postLikes2.png', '../img/windows/chrome/instagram/postLikes3.png']);
+                    await waitRandom();
+
+                    // TODO : check if follow action is blocked
+                    var followCount = 5;
+                    while (followCount--) {
+                        await waitRandom();
+                        await Robot.clickImage('../img/windows/chrome/instagram/follow.png');
+                        var followButtonExists = await Robot.findImage('../img/windows/chrome/instagram/follow.png');
+                        if (!followButtonExists)
+                            await Robot.scroll(-100, 5);
+                    }
+                    await waitRandom();
+                    await Robot.clickUntilImgFound('../img/windows/chrome/instagram/exitFollow.png');
+                }
+                await waitRandom();
+                await Robot.clickUntilImgFound('../img/windows/chrome/instagram/exitPost.png');
+                await waitRandom();
+                await Robot.clickUntilImgFound('../img/windows/chrome/instagram/homeButtonInactive.png');
+                await waitRandom();
                 mysql = await Mysql.new();
                 await mysql.exec(
                     `UPDATE instaWatch.instagramId
@@ -218,6 +280,9 @@ async function follow() {
 }
 
 async function test() {
+    const s10Code = 'R39M60041TD'
+    const adb = ADB.new(s10Code);
+
 }
 
-randomScroll();
+follow();

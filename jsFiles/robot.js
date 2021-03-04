@@ -159,14 +159,14 @@ module.exports.findImage = async function (imageLocation, matchConfidence) {
     return true;
 }
 //robot.clickUntilImgFound
-module.exports.clickUntilImgFound = async function (img, retry) {
-    async function clickImage(imageLocation, addX, addY, matchConfidence) {
+module.exports.clickUntilImgFound = async function (img, addX, addY, retry) {
+    async function clickImage(imageLocation, matchConfidence) {
         if (!addX)
             addX = 0;
         if (!addY)
             addY = 0;
         if (!matchConfidence)
-            matchConfidence = 0.95;
+            matchConfidence = 0.93;
 
         // DeleteOriginal
         try {
@@ -217,14 +217,74 @@ module.exports.clickUntilImgFound = async function (img, retry) {
     if (Array.isArray(img)) {
         while (!imageFound && retry > 0) {
             for (let i = 0; i < img.length; i++) {
-                imageFound = await clickImage(img[i], 0, 0, 0);
+                imageFound = await clickImage(img[i]);
                 if (imageFound) return;
             }
             retry--;
         }
     } else {
         while (!imageFound && retry > 0) {
-            imageFound = await clickImage(img, 0, 0, 0);
+            imageFound = await clickImage(img);
+            retry--;
+        }
+    }
+    if (imageFound == false)
+        throw 'image ' + img + ' is not found!';
+}
+//robot.waitUntilImgFound
+module.exports.waitUntilImgFound = async function (img, retry) {
+    async function findImage(imageLocation, matchConfidence) {
+        if (!matchConfidence)
+            matchConfidence = 0.93;
+
+        // DeleteOriginal
+        try {
+            fs.unlinkSync(screenImg);
+        } catch (e) {
+        }
+
+        // // Wait for imageDelete
+        await Tools.waitFileDelete(screenImg, 300, 50);
+
+        // Get Mobile Screen
+        await screenshot({ filename: screenImg });
+
+        // Wait for imageDownload
+        await Tools.waitFileExist(screenImg, 300, 50);
+
+        // Load images in cv
+        const originalImage = await cv.imreadAsync(screenImg);
+        const findImage = await cv.imreadAsync(imageLocation);
+
+        // Get Matched
+        const matched = originalImage.matchTemplate(findImage, 5);
+
+        // Use minMaxLoc to locate the highest value (or lower, depending of the type of matching method)
+        const minMax = matched.minMaxLoc();
+
+        // Check confidence
+        // console.log(minMax.maxVal);
+        if (minMax.maxVal < matchConfidence) {
+            console.log(imageLocation + ' not found');
+            return false;
+        }
+
+        return true;
+    }
+    if (!retry)
+        retry = 30;
+    var imageFound = false;
+    if (Array.isArray(img)) {
+        while (!imageFound && retry > 0) {
+            for (let i = 0; i < img.length; i++) {
+                imageFound = await findImage(img[i]);
+                if (imageFound) return;
+            }
+            retry--;
+        }
+    } else {
+        while (!imageFound && retry > 0) {
+            imageFound = await findImage(img);
             retry--;
         }
     }
