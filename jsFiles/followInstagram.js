@@ -62,16 +62,6 @@ async function waitRandom() {
 
 // ------------------------------- insta functions ---------------------------------
 async function home() {
-
-}
-
-async function randomScroll() {
-    // let random = Tools.getRandomNumberInRange(10, 40)
-    // await Robot.hoverImage('../img/windows/chrome/instagram/search.png');
-    while (true) {
-        await Robot.scroll(-30, 100);
-        console.log('scrolling')
-    }
 }
 
 // ------------------------------- main functions ---------------------------------
@@ -90,6 +80,8 @@ async function setup() {
 
         // incogniton에서 로그인한다.
         await loginIncogniton(incognitonId.id, incognitonId.password);
+
+        // ------------------------------- pid를 저장하고 pid를 여는 것으로 지정한다. -------------------------------------
 
         // 할당이 되지 않은 인스타 아이디를 가져온다.
         while (incognitonId.assignedAmount < 10) {
@@ -118,6 +110,10 @@ async function setup() {
 
             await Robot.clickUntilImgFound('../img/windows/chrome/google/search.png');
             await Tools.waitSec(1);
+
+            // ------------------------------- 저장된 아이디로 로그인하는 것이 아닌 바로 만들어서 바로 로그인한다. -------------------------------------
+            // ------------------------------- 또한 바로 mysql에 저장해야 한다. -------------------------------------
+
             await Robot.typeBasic('www.instagram.com');
             await Robot.enter();
             await Robot.clickUntilImgFound('../img/windows/chrome/instagram/username.png');
@@ -175,6 +171,7 @@ async function follow() {
     var mysql = await Mysql.new();
 
     // incogniton에서 가장 오래동안 일을 하지 않은 아이디를 찾는다.
+
     let unUsedIncognitonIds = await mysql.get(
         `SELECT * FROM instaWatch.incognitonId
         ORDER BY lastActionTime ASC
